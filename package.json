@@ -1,0 +1,30 @@
+{
+  "name": "carryhub",
+  "version": "1.0.0",
+  "description": "A backend application for managing carryhub operations",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "carryhub",
+    "backend",
+    "nodejs",
+    "express",
+    "postgresql"
+  ],
+  "author": "Mlue Technology",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
