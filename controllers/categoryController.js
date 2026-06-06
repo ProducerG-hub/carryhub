@@ -45,7 +45,7 @@ module.exports.getCategoryById = (req , res)=>{
 module.exports.addCategory = (req , res)=>{
     const { name, description } = req.body;
 
-    if(!name || !description){
+    if(!name){
         return res.status(400).json({message : 'All fields are required'});
     }
     const availableQuery = 'SELECT * FROM categories WHERE name = $1';
@@ -66,6 +66,76 @@ module.exports.addCategory = (req , res)=>{
                         res.status(201).json(result.rows[0]);
                     }
                 });
+            }
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({message : 'Server error'});
+    }
+}
+
+// update category
+module.exports.updateCategory = (req , res)=>{
+    const categoryId = req.params.id;
+    const { name, description } = req.body;
+    if(!name){
+        return res.status(400).json({message : 'All fields are required'});
+    }
+    const updateQuery = 'UPDATE categories SET name = $1, description = $2, updated_at = CURRENT_TIMESTAMP WHERE category_id = $3 RETURNING *';
+    try{
+        pool.query(updateQuery , [name, description, categoryId] , (err , result)=>{
+            if(err){
+                console.log(err);
+                res.status(500).json({message : 'Error updating category'});
+            }else if(result.rows.length === 0){
+                res.status(404).json({message : 'Category not found'});
+            }else{
+                res.status(200).json(result.rows[0]);
+            }
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({message : 'Server error'});
+    }
+}
+
+// delete category - soft delete which means in the column is_active we will set it to false
+module.exports.deleteCategory = (req , res)=>{
+    const categoryId = req.params.id;
+    const deleteQuery = 'UPDATE categories SET is_active = false, updated_at = CURRENT_TIMESTAMP WHERE category_id = $1 RETURNING *';
+    try{
+        pool.query(deleteQuery , [categoryId] , (err , result)=>{
+            if(err){
+                console.log(err);
+                res.status(500).json({message : 'Error deleting category'});
+            }else if(result.rows.length === 0){
+                res.status(404).json({message : 'Category not found'});
+            }else{
+                res.status(200).json({message : 'Category deleted successfully'});
+            }
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({message : 'Server error'});
+    }
+}
+
+// restore category - set is_active to true
+module.exports.restoreCategory = (req , res)=>{
+    const categoryId = req.params.id;
+    const restoreQuery = 'UPDATE categories SET is_active = true, updated_at = CURRENT_TIMESTAMP WHERE category_id = $1 RETURNING *';
+    try{
+        pool.query(restoreQuery , [categoryId] , (err , result)=>{
+            if(err){
+                console.log(err);
+                res.status(500).json({message : 'Error restoring category'});
+            }else if(result.rows.length === 0){
+                res.status(404).json({message : 'Category not found'});
+            }else{
+                res.status(200).json({message : 'Category restored successfully'});
             }
         });
     }

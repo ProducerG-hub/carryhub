@@ -14,5 +14,8 @@ router.get('/api/auth/profile', authMiddleware.isAuthenticated, authController.u
 router.get('/api/categories', categoryController.getCategories);
 router.get('/api/categories/:id', categoryController.getCategoryById);
 router.post('/api/add-categories', authMiddleware.isAuthenticated, categoryController.addCategory);
+router.put('/api/update-categories/:id', authMiddleware.isAuthenticated, categoryController.updateCategory);
+router.delete('/api/delete-categories/:id', authMiddleware.isAuthenticated, categoryController.deleteCategory);   
+router.put('/api/restore-categories/:id', authMiddleware.isAuthenticated, categoryController.restoreCategory);
 
 module.exports = router;
