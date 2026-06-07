@@ -24,4 +24,7 @@ router.get('/api/products', productsController.getProducts);
 router.get('/api/products/:id', productsController.getProductById);
 router.get('/api/products/category/:categoryId', productsController.getProductsByCategoryId);
 router.post('/api/add-products', authMiddleware.isAuthenticated, productsController.addProduct);
+router.put('/api/update-products/:id', authMiddleware.isAuthenticated, productsController.updateProduct);
+router.delete('/api/delete-products/:id', authMiddleware.isAuthenticated, productsController.deleteProduct);
+router.put('/api/restore-products/:id', authMiddleware.isAuthenticated, productsController.restoreProduct);
 module.exports = router;

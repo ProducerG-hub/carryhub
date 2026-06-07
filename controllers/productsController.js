@@ -67,13 +67,13 @@ module.exports.getProductsByCategoryId = (req , res)=>{
 
 // add product
 module.exports.addProduct = (req , res)=>{
-    const { name, description, price, category_id, stock_quantity } = req.body;
+    const { name, description, price, category_id, stock_quantity, image_url } = req.body;
     if(!name || !price || !category_id || !stock_quantity){
         return res.status(400).json({message : 'All fields are required'});
     }
-    const insertQuery = 'INSERT INTO products (name, description, price, category_id, stock_quantity) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    const insertQuery = 'INSERT INTO products (name, description, price, category_id, stock_quantity, image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
     try{
-        pool.query(insertQuery , [name, description, price, category_id, stock_quantity] , (err , result)=>{
+        pool.query(insertQuery , [name, description, price, category_id, stock_quantity, image_url] , (err , result)=>{
             if(err){
                 console.log(err);
                 res.status(500).json({message : 'Error adding product'});
@@ -85,6 +85,79 @@ module.exports.addProduct = (req , res)=>{
     }
     catch(err){
         console.log(err);
+        res.status(500).json({message : 'Server error'});
+    }
+}
+
+// update product
+module.exports.updateProduct = (req , res)=>{
+    const productId = req.params.id;
+    const { name, description, price, category_id, stock_quantity, image_url } = req.body;
+    const updateQuery = 'UPDATE products SET name = $1, description = $2, price = $3, category_id = $4, stock_quantity = $5, image_url = $6, updated_at = CURRENT_TIMESTAMP WHERE product_id = $7 RETURNING *';
+    try{
+        pool.query(updateQuery , [name, description, price, category_id, stock_quantity, image_url, productId] , (err , result)=>{
+            if(err){
+                console.log(err);
+                res.status(500).json({message : 'Error updating product'});
+            }
+            else if(result.rows.length === 0){
+                res.status(404).json({message : 'Product not found'});
+            }
+            else{
+                res.status(200).json(result.rows[0]);
+            }
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({message : 'Server error'});
+    }
+}
+
+// delete product (soft delete)
+module.exports.deleteProduct = (req , res)=>{
+    const productId = req.params.id;
+    const deleteQuery = 'UPDATE products SET is_active = false, updated_at = CURRENT_TIMESTAMP WHERE product_id = $1 RETURNING *';
+    try{
+        pool.query(deleteQuery , [productId] , (err , result)=>{
+            if(err){
+                console.log(err);
+                res.status(500).json({message : 'Error deleting product'});
+            }
+            else if(result.rows.length === 0){
+                res.status(404).json({message : 'Product not found'});
+            }
+            else{
+                res.status(200).json({message : 'Product deleted successfully'});
+            }
+        });
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({message : 'Server error'});
+    }
+}
+
+// restore product
+module.exports.restoreProduct = (req , res)=>{
+    const productId = req.params.id;
+    const restoreQuery = 'UPDATE products SET is_active = true, updated_at = CURRENT_TIMESTAMP WHERE product_id = $1 RETURNING *';
+    try{
+        pool.query(restoreQuery , [productId] , (err , result)=>{
+            if(err){
+                console.log(err);
+                res.status(500).json({message : 'Error restoring product'});
+            }
+            else if(result.rows.length === 0){
+                res.status(404).json({message : 'Product not found'});
+            }
+            else{
+                res.status(200).json({message : 'Product restored successfully'});
+            }
+        });
+    }
+    catch(error){
+        console.log(error);
         res.status(500).json({message : 'Server error'});
     }
 }
