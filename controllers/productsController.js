@@ -64,3 +64,27 @@ module.exports.getProductsByCategoryId = (req , res)=>{
         res.status(500).json({message : 'Server error'});
     }
 }
+
+// add product
+module.exports.addProduct = (req , res)=>{
+    const { name, description, price, category_id, stock_quantity } = req.body;
+    if(!name || !price || !category_id || !stock_quantity){
+        return res.status(400).json({message : 'All fields are required'});
+    }
+    const insertQuery = 'INSERT INTO products (name, description, price, category_id, stock_quantity) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    try{
+        pool.query(insertQuery , [name, description, price, category_id, stock_quantity] , (err , result)=>{
+            if(err){
+                console.log(err);
+                res.status(500).json({message : 'Error adding product'});
+            }
+            else{
+                res.status(201).json(result.rows[0]);
+            }
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({message : 'Server error'});
+    }
+}
