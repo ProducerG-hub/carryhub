@@ -23,4 +23,5 @@ router.put('/api/restore-categories/:id', authMiddleware.isAuthenticated, catego
 router.get('/api/products', productsController.getProducts);
 router.get('/api/products/:id', productsController.getProductById);
 router.get('/api/products/category/:categoryId', productsController.getProductsByCategoryId);
+router.post('/api/add-products', authMiddleware.isAuthenticated, productsController.addProduct);
 module.exports = router;
