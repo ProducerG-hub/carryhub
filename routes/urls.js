@@ -1,5 +1,6 @@
 const authController = require('../controllers/authController');
 const categoryController = require('../controllers/categoryController');
+const productsController = require('../controllers/productsController');
 const authMiddleware = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
@@ -18,4 +19,8 @@ router.put('/api/update-categories/:id', authMiddleware.isAuthenticated, categor
 router.delete('/api/delete-categories/:id', authMiddleware.isAuthenticated, categoryController.deleteCategory);   
 router.put('/api/restore-categories/:id', authMiddleware.isAuthenticated, categoryController.restoreCategory);
 
+// product routes
+router.get('/api/products', productsController.getProducts);
+router.get('/api/products/:id', productsController.getProductById);
+router.get('/api/products/category/:categoryId', productsController.getProductsByCategoryId);
 module.exports = router;
