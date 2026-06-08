@@ -1,0 +1,316 @@
+/* ===================================
+   GOOGLE FONTS
+=================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* ===================================
+   ROOT VARIABLES
+=================================== */
+:root {
+    --primary-color: #111827;
+    --secondary-color: #8B5E3C;
+    --white-color: #FFFFFF;
+
+    --text-dark: #1F2937;
+    --text-light: #6B7280;
+
+    --border-color: #E5E7EB;
+    --background-light: #F9FAFB;
+
+    --transition: all 0.3s ease;
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+
+    --container-width: 1200px;
+}
+
+/* ===================================
+   RESET
+=================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    background: var(--white-color);
+    line-height: 1.6;
+}
+
+/* ===================================
+   TYPOGRAPHY
+=================================== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* ===================================
+   LAYOUT
+=================================== */
+.container-custom {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: auto;
+    padding: 0 15px;
+}
+
+/* ===================================
+   BUTTONS
+=================================== */
+.btn-carryhub {
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-carryhub:hover {
+    background-color: #72492d;
+    color: var(--white-color);
+}
+
+.btn-outline-carryhub {
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-outline-carryhub:hover {
+    background: var(--secondary-color);
+    color: var(--white-color);
+}
+
+/* ===================================
+   SECTION SPACING
+=================================== */
+.section-padding {
+    padding: 80px 0;
+}
+
+/* ===================================
+   SECTION TITLE
+=================================== */
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.section-title p {
+    color: var(--text-light);
+}
+
+/* ==========================
+   NAVBAR
+========================== */
+
+.carryhub-navbar {
+    background: var(--white-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.carryhub-logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.carryhub-logo:hover {
+    color: var(--secondary-color);
+}
+
+.nav-link {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin: 0 8px;
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--secondary-color);
+}
+
+.nav search input {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    transition: var(--transition);
+} 
+
+.nav-action {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.nav-action:hover {
+    color: var(--secondary-color);
+}
+
+.cart-link {
+    position: relative;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.cart-link:hover {
+    color: var(--secondary-color);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+
+    background: var(--secondary-color);
+    color: white;
+
+    font-size: 0.75rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================
+   HERO SECTION
+========================== */
+
+.hero-section {
+    padding: 100px 0;
+    background: linear-gradient(
+        to right,
+        #ffffff,
+        #f9fafb
+    );
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(139, 94, 60, 0.1);
+    color: var(--secondary-color);
+
+    padding: 8px 15px;
+    border-radius: 50px;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: var(--text-light);
+
+    margin-bottom: 30px;
+    max-width: 550px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.hero-image-wrapper {
+    text-align: center;
+}
+
+.hero-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ===================================
+   FOOTER
+=================================== */
+footer {
+    background: var(--text-dark);
+    padding: 40px 0;
+    text-align: center;
+    color: var(--text-light);
+}
+
+footer h1, h2, h3, h4, h5, h6 {
+    color: var(--white-color);
+}
+
+@media (max-width: 991px) {
+
+    .hero-section {
+        text-align: center;
+        padding: 60px 0;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-image-wrapper {
+        margin-top: 40px;
+    }
+
+}

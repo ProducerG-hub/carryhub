@@ -1,27 +1,26 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
-const pool = require('./config/db');
+const pool = require('./src/config/db');
 const session = require('express-session');
-const router = require('./routes/urls');
+const router = require('./src/routes/urls');
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }, // Set to true if using HTTPS
-    cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day validity
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // Set to true if using HTTPS, 1 day validity
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the 'public' directory
+app.set('view engine', 'ejs'); // Set EJS as the view engine
+app.set('views', path.join(__dirname,'src','views')); // Set the views directory
 app.use(router);
 
-
-app.get('/', (req, res) => {
-  res.send('Welcome to CarryHub Backend!');
-});
 
 // graceful shutdown
 process.on('SIGINT', () => {
