@@ -1,0 +1,43 @@
+<%- include('../layouts/header', {
+    title: 'Shop | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar') %>
+
+<section class="section-padding">
+
+    <div class="container-custom">
+
+        <div class="section-title">
+
+            <h1>Shop Bags</h1>
+
+            <p>
+                Explore our premium collection.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <% products.forEach(product => { %>
+
+                <div class="col-md-6 col-lg-4 col-xl-3">
+
+                    <%- include('../partials/product-card', {
+                        product
+                    }) %>
+
+                </div>
+
+            <% }) %>
+            
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>

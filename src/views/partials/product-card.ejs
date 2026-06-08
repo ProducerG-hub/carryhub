@@ -1,0 +1,42 @@
+<div class="product-card">
+
+    <div class="product-image-wrapper">
+
+        <img
+            src="/images/products/handbag.png"
+            alt="<%= product.name %>"
+            class="product-image"
+        >
+
+    </div>
+
+    <div class="product-content">
+
+        <h5 class="product-name">
+            <%= product.name %>
+        </h5>
+
+        <p class="product-description">
+            <%= product.description %>
+        </p>
+
+        <div class="product-rating">
+            ★★★★★
+        </div>
+
+        <div class="product-price">
+            TZS <%= product.price.toLocaleString() %>
+        </div>
+
+        <a
+            href="/products/<%= product.slug %>"
+            class="btn btn-carryhub w-100"
+        >
+            Add to Cart
+        </a>
+
+        
+
+    </div>
+    
+</div>
