@@ -2,8 +2,12 @@ const authController = require('../controllers/authController');
 const categoryController = require('../controllers/categoryController');
 const productsController = require('../controllers/productsController');
 const authMiddleware = require('../middleware/auth');
+const urlController = require('../controllers/urlController');
 const express = require('express');
 const router = express.Router();
+
+//general routes
+router.get('/', urlController.getHome);
 
 // Authentication routes
 router.post('/api/auth/register', authController.Register);
