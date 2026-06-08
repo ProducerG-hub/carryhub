@@ -1,84 +1,124 @@
-<nav class="navbar navbar-expand-lg carryhub-navbar sticky-top">
+<!-- ==========================
+     DESKTOP NAVBAR
+========================== -->
+<nav class="desktop-navbar carryhub-navbar sticky-top">
 
     <div class="container-custom">
 
-        <!-- Mobile Toggle -->
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNavbar"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Navbar Content -->
-        <div class="collapse navbar-collapse" id="mainNavbar">
-             <!-- Logo -->
         <a class="navbar-brand" href="/">
-            <img src="/images/carryhub.png" alt="CarryHub Logo" height="50">
+            <img
+                src="/images/carryhub.png"
+                alt="CarryHub Logo"
+                height="55"
+            >
         </a>
-            <!-- Navigation Links -->
-            <ul class="navbar-nav mx-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/">
-                        Home
-                    </a>
-                </li>
+        <ul class="desktop-nav-links">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">
-                        Shop
-                    </a>
-                </li>
+            <li>
+                <a href="/">Home</a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/categories">
-                        Categories
-                    </a>
-                </li>
+            <li>
+                <a href="/products">Shop</a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact">
-                        Contact
-                    </a>
-                </li>
+            <li>
+                <a href="/categories">Categories</a>
+            </li>
 
-            </ul>
+            <li>
+                <a href="/contact">Contact</a>
+            </li>
 
-            <!-- Search -->
-            <form class="d-flex me-3">
+        </ul>
+
+        <div class="desktop-right">
+
+            <form class="desktop-search">
                 <input
-                    class="form-control"
                     type="search"
+                    class="form-control"
                     placeholder="Search bags..."
                 >
             </form>
 
-            
-            <!-- Actions -->
-            <div class="d-flex align-items-center gap-3">
+            <a href="/login" class="nav-action">
+                Login
+            </a>
 
-                <a href="/login" class="nav-action">
-                    Login
-                </a>
+            <a href="/register" class="nav-action">
+                Register
+            </a>
 
-                <a href="/register" class="nav-action">
-                    Register
-                </a>
+            <a href="/cart" class="cart-link">
+                🛒
+                <span class="cart-badge">0</span>
+            </a>
 
-                <a href="/cart" class="cart-link">
+        </div>
 
-                    🛒
+    </div>
 
-                    <span class="cart-badge">
-                        0
-                    </span>
+</nav>
 
-                </a>
 
-            </div>
+<!-- ==========================
+     MOBILE NAVBAR
+========================== -->
+
+<nav class="mobile-navbar sticky-top">
+
+    <div class="container-custom">
+
+        <!-- Row 1 -->
+        <div class="mobile-top-bar">
+
+            <a class="navbar-brand" href="/">
+                <img
+                    src="/images/carryhub.png"
+                    alt="CarryHub Logo"
+                    height="45"
+                >
+            </a>
+
+            <form class="mobile-search">
+
+                <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search bags..."
+                >
+
+            </form>
+
+        </div>
+
+        <!-- Row 2 -->
+
+        <div class="mobile-nav-links">
+
+            <a href="/">
+                 Home
+            </a>
+
+            <a href="/products">
+                 Shop
+            </a>
+
+            <a href="/categories">
+                 Categories
+            </a>
+
+            <a href="/cart" class="mobile-cart">
+
+                🛒 Cart
+
+                <span class="cart-badge">
+                    0
+                </span>
+
+            </a>
 
         </div>
 

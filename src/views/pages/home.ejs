@@ -9,10 +9,9 @@
 
     <div class="container-custom">
 
-        <div class="row align-items-center">
+        <div class="row align-items-center g-5">
 
-            <!-- Hero Content -->
-            <div class="col-lg-6">
+            <div class="col-lg-6 order-lg-1 order-2">
 
                 <span class="hero-badge">
                     Premium Bags Collection
@@ -20,41 +19,56 @@
 
                 <h1 class="hero-title">
                     Carry Style,
-                    Carry Confidence.
+                    <span>Carry Confidence.</span>
                 </h1>
 
                 <p class="hero-description">
-                    Discover premium backpacks, travel bags,
-                    laptop bags and everyday essentials
-                    designed for comfort, durability and style.
+                    Discover premium backpacks, laptop bags,
+                    travel bags and everyday essentials crafted
+                    for comfort, durability and timeless style.
                 </p>
 
                 <div class="hero-buttons">
 
                     <a href="/products"
                        class="btn btn-carryhub">
-                        Shop Now 
-                        <i class="bi bi-arrow-right">
-                        </i>
+                        Shop Now <i class="bi bi-arrow-right"></i>
                     </a>
 
                     <a href="/categories"
                        class="btn btn-outline-carryhub">
-                        Browse Categories
+                        Explore Collection
                     </a>
+
+                </div>
+
+                <div class="hero-features">
+
+                    <div class="hero-feature">
+                        ✓ Premium Quality
+                    </div>
+
+                    <div class="hero-feature">
+                        ✓ Fast Delivery
+                    </div>
+
+                    <div class="hero-feature">
+                        ✓ Secure Checkout
+                    </div>
 
                 </div>
 
             </div>
 
-            <!-- Hero Image -->
-            <div class="col-lg-6">
+            <div class="col-lg-6 order-lg-2 order-1">
 
-                <div class="hero-image-wrapper">
+                <div class="hero-image-container">
+
+                    <div class="hero-image-bg"></div>
 
                     <img
                         src="/images/hero_image.png"
-                        alt="CarryHub Premium Bag"
+                        alt="CarryHub Bags"
                         class="hero-image"
                     >
 
@@ -66,6 +80,5 @@
 
     </div>
 
-</section>
-<%- include('../layouts/footer') %>
+</section><%- include('../layouts/footer') %>
 <%- include('../layouts/scripts') %>

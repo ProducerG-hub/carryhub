@@ -9,7 +9,7 @@ module.exports.getProducts = (req , res)=>{
                 console.log(err);
                 res.status(500).json({message : 'Error fetching products'});
             }else{
-                res.status(200).json(result.rows);
+                res.render('pages/products', { products: result.rows, user: req.session.user });
             }
         });
     }
@@ -31,7 +31,7 @@ module.exports.getProductById = (req , res)=>{
             }else if(result.rows.length === 0){
                 res.status(404).json({message : 'Product not found'});
             }else{
-                res.status(200).json(result.rows[0]);
+                res.render('pages/product-detail', { product: result.rows[0], user: req.session.user });
             }
         });
     }
