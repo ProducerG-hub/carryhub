@@ -1,0 +1,127 @@
+<%- include('../layouts/header', {
+    title: product.name + ' | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar') %>
+
+<section class="product-details-page section-padding">
+
+    <div class="container-custom">
+
+        <div class="row g-5 align-items-center">
+
+            <!-- Product Image -->
+
+            <div class="col-lg-6">
+
+                <div class="product-details-image">
+
+                    <img
+                        src="<%= product.image_url || '/images/products/default.png' %>"
+                        alt="<%= product.name %>"
+                        onerror="this.onerror=null;this.src='/images/products/default.png';"
+                        class="img-fluid"
+                    >
+
+                </div>
+
+            </div>
+
+            <!-- Product Info -->
+
+            <div class="col-lg-6">
+
+                <span class="product-category">
+
+                    <%= product.category %>
+
+                </span>
+
+                <h1 class="product-title">
+
+                    <%= product.name %>
+
+                </h1>
+
+                <div class="product-rating">
+
+                    ★★★★★
+
+                </div>
+
+                <div class="product-price">
+
+                    TZS
+                    <%= Number(product.price).toLocaleString() %>
+
+                </div>
+
+                <p class="product-description">
+
+                    <%= product.description %>
+
+                </p>
+
+                <div class="product-stock">
+
+                    <% if(product.stock_quantity > 0) { %>
+
+                        <span class="in-stock">
+
+                            In Stock
+
+                        </span>
+
+                    <% } else { %>
+
+                        <span class="out-stock">
+
+                            Out Of Stock
+
+                        </span>
+
+                    <% } %>
+
+                </div>
+
+                <!-- Quantity -->
+
+                <div class="quantity-wrapper">
+
+                    <label>
+
+                        Quantity
+
+                    </label>
+
+                    <input
+                        type="number"
+                        min="1"
+                        value="1"
+                        class="form-control quantity-input"
+                    >
+
+                </div>
+
+                <!-- Buttons -->
+
+                <div class="product-actions">
+
+                    <button
+                        class="btn btn-carryhub btn-lg"
+                    >
+                        Add To Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>

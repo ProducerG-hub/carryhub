@@ -25,7 +25,7 @@ router.put('/api/restore-categories/:id', authMiddleware.isAuthenticated, catego
 
 // product routes
 router.get('/products', productsController.getProducts);
-router.get('/api/products/:id', productsController.getProductById);
+router.get('/products/:id', productsController.getProductById);
 router.get('/api/products/category/:categoryId', productsController.getProductsByCategoryId);
 router.post('/api/add-products', authMiddleware.isAuthenticated, productsController.addProduct);
 router.put('/api/update-products/:id', authMiddleware.isAuthenticated, productsController.updateProduct);
