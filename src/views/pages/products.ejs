@@ -5,37 +5,185 @@
 <%- include('../layouts/navbar') %>
 
 <section class="section-padding">
+<div class="container-custom">
 
-    <div class="container-custom">
+<div class="section-title">
 
-        <div class="section-title">
+    <h1>Shop Bags</h1>
 
-            <h1>Shop Bags</h1>
+    <p>
+        Explore our premium collection.
+    </p>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="shop-search mb-4">
+
+    <form
+        action="/products"
+        method="GET"
+    >
+
+        <% if(selectedCategory) { %>
+
+            <input
+                type="hidden"
+                name="category"
+                value="<%= selectedCategory %>"
+            >
+
+        <% } %>
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Search bags..."
+                value="<%= search || '' %>"
+            >
+
+            <button
+                class="btn btn-carryhub"
+                type="submit"
+            >
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- CATEGORY FILTERS -->
+
+<div class="category-filters">
+
+    <a
+        href="/products"
+        class="category-pill <%= !selectedCategory ? 'active' : '' %>"
+    >
+        All
+    </a>
+
+    <% categories.forEach(category => { %>
+
+        <a
+            href="/products?category=<%= category.category_id %>"
+            class="category-pill <%= selectedCategory == category.category_id ? 'active' : '' %>"
+        >
+            <%= category.name %>
+        </a>
+
+    <% }) %>
+
+</div>
+
+<!-- PRODUCTS GRID -->
+
+<div class="row g-4">
+
+    <% if(products.length > 0) { %>
+
+        <% products.forEach(product => { %>
+
+            <div class="col-md-6 col-lg-4 col-xl-3">
+
+                <%- include('../partials/product-card', {
+                    product
+                }) %>
+
+            </div>
+
+        <% }) %>
+
+    <% } else { %>
+
+        <div class="col-12 text-center">
+
+            <h5>
+                No products found
+            </h5>
 
             <p>
-                Explore our premium collection.
+                Try another search or category.
             </p>
 
         </div>
 
-        <div class="row g-4">
+    <% } %>
 
-            <% products.forEach(product => { %>
+</div>
 
-                <div class="col-md-6 col-lg-4 col-xl-3">
+<!-- PAGINATION -->
 
-                    <%- include('../partials/product-card', {
-                        product
-                    }) %>
+<% if(totalPages > 1) { %>
 
-                </div>
+    <div class="pagination-wrapper">
 
-            <% }) %>
-            
+        <nav>
 
-        </div>
+            <ul class="pagination justify-content-center">
+
+                <% if(currentPage > 1) { %>
+
+                    <li class="page-item">
+
+                        <a
+                            class="page-link"
+                            href="/products?page=<%= currentPage - 1 %><%= selectedCategory ? '&category=' + selectedCategory : '' %><%= search ? '&search=' + encodeURIComponent(search) : '' %>"
+                        >
+                            Previous
+                        </a>
+
+                    </li>
+
+                <% } %>
+
+                <% for(let i = 1; i <= totalPages; i++) { %>
+
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+
+                        <a
+                            class="page-link"
+                            href="/products?page=<%= i %><%= selectedCategory ? '&category=' + selectedCategory : '' %><%= search ? '&search=' + encodeURIComponent(search) : '' %>"
+                        >
+                            <%= i %>
+                        </a>
+
+                    </li>
+
+                <% } %>
+
+                <% if(currentPage < totalPages) { %>
+
+                    <li class="page-item">
+
+                        <a
+                            class="page-link"
+                            href="/products?page=<%= currentPage + 1 %><%= selectedCategory ? '&category=' + selectedCategory : '' %><%= search ? '&search=' + encodeURIComponent(search) : '' %>"
+                        >
+                            Next
+                        </a>
+
+                    </li>
+
+                <% } %>
+
+            </ul>
+
+        </nav>
 
     </div>
+
+<% } %>
+
+</div>
+
 
 </section>
 

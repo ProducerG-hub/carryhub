@@ -2,18 +2,30 @@
 
     <div class="product-image-wrapper">
 
-        <img
-            src="/images/products/handbag.png"
-            alt="<%= product.name %>"
-            class="product-image"
-        >
+        <a href="/products/<%= product.product_id %>">
+
+            <img
+                src="<%= product.image_url || '/images/products/default.png' %>"
+                alt="<%= product.name %>"
+                onerror="this.onerror=null;this.src='/images/products/default.png';"
+                class="product-image"
+            >
+
+        </a>
 
     </div>
 
     <div class="product-content">
 
         <h5 class="product-name">
-            <%= product.name %>
+
+            <a
+                href="/products/<%= product.product_id %>"
+                class="product-link"
+            >
+                <%= product.name %>
+            </a>
+
         </h5>
 
         <p class="product-description">
@@ -25,18 +37,15 @@
         </div>
 
         <div class="product-price">
-            TZS <%= product.price.toLocaleString() %>
+            TZS <%= Number(product.price).toLocaleString() %>
         </div>
 
-        <a
-            href="/products/<%= product.slug %>"
+        <button
             class="btn btn-carryhub w-100"
         >
             Add to Cart
-        </a>
-
-        
+        </button>
 
     </div>
-    
+
 </div>

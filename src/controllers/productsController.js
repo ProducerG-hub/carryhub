@@ -1,28 +1,148 @@
 const pool = require('../config/db');
+module.exports.getProducts = (req, res) => {
 
-// Get all active products
-module.exports.getProducts = (req , res)=>{
-    const productQuery = 'SELECT P.name AS  name, P.description AS description, P.price, C.name AS category FROM products P JOIN categories C ON P.category_id = C.category_id WHERE P.is_active = true AND C.is_active = true';
-    try{
-        pool.query(productQuery , (err , result)=>{
-            if(err){
-                console.log(err);
-                res.status(500).json({message : 'Error fetching products'});
-            }else{
-                res.render('pages/products', { products: result.rows, user: req.session.user });
+    const page = parseInt(req.query.page) || 1;
+    const category = req.query.category || '';
+    const search = req.query.search || '';
+
+    const limit = 8;
+    const offset = (page - 1) * limit;
+
+    let whereClause = `
+        WHERE P.is_active = true
+        AND C.is_active = true
+    `;
+
+    let params = [];
+    let paramIndex = 1;
+
+    if (category) {
+
+        whereClause += `
+            AND P.category_id = $${paramIndex}
+        `;
+
+        params.push(category);
+        paramIndex++;
+    }
+
+    if (search) {
+
+        whereClause += `
+            AND (
+                LOWER(P.name) LIKE LOWER($${paramIndex})
+                OR LOWER(P.description) LIKE LOWER($${paramIndex})
+            )
+        `;
+
+        params.push(`%${search}%`);
+        paramIndex++;
+    }
+
+    const categoryQuery = `
+        SELECT
+            category_id,
+            name
+        FROM categories
+        WHERE is_active = true
+        ORDER BY name ASC
+    `;
+
+    const countQuery = `
+        SELECT COUNT(*) AS total
+        FROM products P
+        JOIN categories C
+        ON P.category_id = C.category_id
+        ${whereClause}
+    `;
+
+    const productQuery = `
+        SELECT
+            P.product_id,
+            P.name,
+            P.description,
+            P.price,
+            P.image_url,
+            P.stock_quantity,
+            C.name AS category
+        FROM products P
+        JOIN categories C
+        ON P.category_id = C.category_id
+        ${whereClause}
+        ORDER BY P.product_id DESC
+        LIMIT $${paramIndex}
+        OFFSET $${paramIndex + 1}
+    `;
+
+    pool.query(categoryQuery, (catErr, catResult) => {
+
+        if (catErr) {
+            console.log(catErr);
+            return res.status(500).send('Error fetching categories');
+        }
+
+        pool.query(countQuery, params, (countErr, countResult) => {
+
+            if (countErr) {
+                console.log(countErr);
+                return res.status(500).send('Error counting products');
             }
+
+            const totalProducts =
+                parseInt(countResult.rows[0].total);
+
+            const totalPages =
+                Math.ceil(totalProducts / limit);
+
+            const productParams = [
+                ...params,
+                limit,
+                offset
+            ];
+
+            pool.query(
+                productQuery,
+                productParams,
+                (productErr, productResult) => {
+
+                    if (productErr) {
+                        console.log(productErr);
+                        return res.status(500).send('Error fetching products');
+                    }
+
+                    res.render('pages/products', {
+
+                        products: productResult.rows,
+
+                        categories: catResult.rows,
+
+                        currentPage: page,
+
+                        totalPages,
+
+                        totalProducts,
+
+                        selectedCategory: category,
+
+                        search,
+
+                        user: req.session.user
+
+                    });
+
+                }
+            );
+
         });
-    }
-    catch(err){
-        console.log(err);
-        res.status(500).json({message : 'Server error'});
-    }
-}
+
+    });
+
+};
 
 // Get product by id
 module.exports.getProductById = (req , res)=>{
     const productId = req.params.id;
-    const productQuery = 'SELECT P.name AS  name, P.description AS description, P.price, C.name AS category FROM products P JOIN categories C ON P.category_id = C.category_id WHERE P.product_id = $1 AND P.is_active = true AND C.is_active = true';
+    const productQuery = 'SELECT P.name AS  name, P.description AS description, P.price, P.stock_quantity, P.image_url, C.name AS category FROM products P JOIN categories C ON P.category_id = C.category_id WHERE P.product_id = $1 AND P.is_active = true AND C.is_active = true';
     try{
         pool.query(productQuery , [productId] , (err , result)=>{
             if(err){
@@ -31,7 +151,7 @@ module.exports.getProductById = (req , res)=>{
             }else if(result.rows.length === 0){
                 res.status(404).json({message : 'Product not found'});
             }else{
-                res.render('pages/product-detail', { product: result.rows[0], user: req.session.user });
+                res.render('pages/product-details', { product: result.rows[0], user: req.session.user });
             }
         });
     }
@@ -44,7 +164,7 @@ module.exports.getProductById = (req , res)=>{
 // get products by category id
 module.exports.getProductsByCategoryId = (req , res)=>{
     const categoryId = req.params.categoryId;
-    const productQuery = 'SELECT P.name AS  name, P.description AS description, P.price, C.name AS category FROM products P JOIN categories C ON P.category_id = C.category_id WHERE P.category_id = $1 AND P.is_active = true AND C.is_active = true';
+    const productQuery = 'SELECT P.name AS  name, P.description AS description, P.price, P.stock_quantity, P.image_url, C.name AS category FROM products P JOIN categories C ON P.category_id = C.category_id WHERE P.category_id = $1 AND P.is_active = true AND C.is_active = true';
     try{
         pool.query(productQuery , [categoryId] , (err , result)=>{
             if(err){
