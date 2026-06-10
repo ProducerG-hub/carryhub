@@ -1,0 +1,73 @@
+<%- include('../layouts/header', {
+    title: 'Register | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', { user: user }) %>
+
+<section class="auth-page section-padding">
+    <div class="container-custom">
+        <div class="row justify-content-center align-items-center g-5">
+            <div class="col-lg-5 order-lg-2">
+                <div class="auth-panel auth-panel-compact auth-panel-highlight">
+                    <span class="auth-kicker">Join CarryHub</span>
+                    <h1 class="auth-title">Create your account in a minute</h1>
+                    <p class="auth-copy">Register once to shop faster, manage your cart, and unlock a smoother checkout flow.</p>
+
+                    <div class="auth-benefits">
+                        <div>Quick registration</div>
+                        <div>Secure authentication</div>
+                        <div>Personal dashboard ready</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 order-lg-1">
+                <div class="auth-panel">
+                    <form class="auth-form" method="POST" action="/api/auth/register">
+                        <div class="auth-form-header">
+                            <img src="/images/carryhub.png" alt="CarryHub Logo" class="mb-3" style="width: 120px;">
+                            <p style="color: var(--secondary-color);">Fill in your details to create your account and start shopping.</p>
+                        </div>
+
+                        <div class="auth-alert" data-auth-alert hidden></div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--secondary-color);" for="registerName">Full name</label>
+                            <input id="registerName" name="full_name" type="text" class="form-control auth-input" placeholder="Judith David" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--secondary-color);" for="registerEmail">Email</label>
+                            <input id="registerEmail" name="email" type="email" class="form-control auth-input" placeholder="judith@example.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--secondary-color);" for="registerPhone">Phone</label>
+                            <input id="registerPhone" name="phone" type="tel" class="form-control auth-input" placeholder="+255 700 000 000" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--secondary-color);" for="registerPassword">Password</label>
+                            <input id="registerPassword" name="password" type="password" class="form-control auth-input" placeholder="Create a password" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label" style="color: var(--secondary-color);" for="registerConfirmPassword">Confirm password</label>
+                            <input id="registerConfirmPassword" name="confirm_password" type="password" class="form-control auth-input" placeholder="Repeat your password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-carryhub auth-submit w-100">Create Account</button>
+
+                        <p class="auth-switch">
+                            Already have an account?
+                            <a href="/login">Sign in</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>

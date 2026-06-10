@@ -8,6 +8,9 @@ const router = express.Router();
 
 //general routes
 router.get('/', urlController.getHome);
+router.get('/login', urlController.getLogin);
+router.get('/register', urlController.getRegister);
+router.get('/profile', authMiddleware.isAuthenticated, urlController.getProfile);
 
 // Authentication routes
 router.post('/api/auth/register', authController.Register);

@@ -1,0 +1,71 @@
+<%- include('../layouts/header', {
+    title: 'My Profile | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar') %>
+
+<section class="section-padding">
+    <div class="container-custom">
+        <div class="section-title text-start mb-4">
+            <h1>My Profile</h1>
+            <p>View your account details and manage your session.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="auth-panel">
+                    <div class="profile-summary">
+                        <div class="profile-avatar-large">
+                            <%= user.full_name.charAt(0).toUpperCase() %>
+                        </div>
+
+                        <div>
+                            <h2 class="mb-1"><%= user.full_name %></h2>
+                            <p class="mb-0 text-muted"><%= user.email %></p>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-4">
+                        <div class="col-md-6">
+                            <div class="profile-info-card">
+                                <span>Full name</span>
+                                <strong><%= user.full_name %></strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="profile-info-card">
+                                <span>Email</span>
+                                <strong><%= user.email %></strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="profile-info-card">
+                                <span>Phone</span>
+                                <strong><%= user.phone || 'Not provided' %></strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="profile-info-card">
+                                <span>Account status</span>
+                                <strong>Signed in</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4 flex-wrap">
+                        <a href="/products" class="btn btn-carryhub">Continue shopping</a>
+                        <form action="/api/auth/logout" method="POST" class="m-0">
+                            <button type="submit" class="btn btn-outline-carryhub">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>

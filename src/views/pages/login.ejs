@@ -1,0 +1,58 @@
+<%- include('../layouts/header', {
+    title: 'Login | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', { user: user }) %>
+
+<section class="auth-page section-padding">
+    <div class="container-custom">
+        <div class="row justify-content-center align-items-center g-5">
+            <div class="col-lg-5">
+                <div class="auth-panel auth-panel-compact">
+                    <span class="auth-kicker">Welcome back</span>
+                    <h1 class="auth-title">Sign in to your CarryHub account</h1>
+                    <p class="auth-copy">Access your saved details, checkout faster, and keep track of orders in one place.</p>
+
+                    <div class="auth-benefits">
+                        <div>Faster checkout</div>
+                        <div>Order tracking</div>
+                        <div>Saved preferences</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="auth-panel">
+                    <form class="auth-form" method="POST" action="/api/auth/login">
+                        <div class="auth-form-header">
+                            <img src="/images/carryhub.png" alt="CarryHub Logo" class="mb-3" style="width: 120px;">
+                            <p style="color: var(--secondary-color);">Use your email and password to continue.</p>
+                        </div>
+
+                        <div class="auth-alert" data-auth-alert hidden></div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--secondary-color);" for="loginEmail">Email</label>
+                            <input id="loginEmail" name="email" type="email" class="form-control auth-input" placeholder="you@example.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--secondary-color);" for="loginPassword">Password</label>
+                            <input id="loginPassword" name="password" type="password" class="form-control auth-input" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-carryhub auth-submit w-100">Sign In</button>
+
+                        <p class="auth-switch">
+                            Don’t have an account?
+                            <a href="/register">Create one</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>
