@@ -84,36 +84,35 @@
 
                 </div>
 
-                <!-- Quantity -->
+                <form action="/api/cart/add/<%= product.product_id %>" method="POST" class="product-actions">
+                    <input type="hidden" name="next" value="/products/<%= product.product_id %>">
 
-                <div class="quantity-wrapper">
+                    <div class="quantity-wrapper mb-4">
+                        <label for="quantityInput">
 
-                    <label>
+                            Quantity
 
-                        Quantity
+                        </label>
 
-                    </label>
+                        <input
+                            id="quantityInput"
+                            name="quantity"
+                            type="number"
+                            min="1"
+                            value="1"
+                            class="form-control quantity-input"
+                        >
 
-                    <input
-                        type="number"
-                        min="1"
-                        value="1"
-                        class="form-control quantity-input"
-                    >
-
-                </div>
-
-                <!-- Buttons -->
-
-                <div class="product-actions">
+                    </div>
 
                     <button
+                        type="submit"
                         class="btn btn-carryhub btn-lg"
                     >
                         Add To Cart
                     </button>
 
-                </div>
+                </form>
 
             </div>
 

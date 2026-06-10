@@ -37,12 +37,17 @@
         <div class="product-price">
             Tsh. <%= Number(product.price).toLocaleString() %>
         </div>
-        
-        <button
-            class="btn btn-carryhub w-100"
-        >
-            Add to Cart
-        </button>
+
+        <form action="/api/cart/add/<%= product.product_id %>" method="POST" class="m-0">
+            <input type="hidden" name="next" value="/products">
+
+            <button
+                type="submit"
+                class="btn btn-carryhub w-100"
+            >
+                Add to Cart
+            </button>
+        </form>
 
     </div>
 

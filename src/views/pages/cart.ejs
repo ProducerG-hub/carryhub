@@ -1,0 +1,115 @@
+<%- include('../layouts/header', {
+    title: 'Your Cart | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', { user: user }) %>
+
+<section class="cart-page section-padding">
+    <div class="container-custom">
+        <div class="cart-hero mb-5">
+            <span class="hero-badge">Your selected items</span>
+            <h1 class="section-title mb-2">Shopping Cart</h1>
+            <p class="cart-summary-copy">
+                Review the products saved to your account before heading to checkout.
+            </p>
+        </div>
+
+        <% if (items && items.length > 0) { %>
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="cart-items-stack">
+                        <% items.forEach(item => { %>
+                            <article class="cart-item-card">
+                                <div class="cart-item-image-wrap">
+                                    <img
+                                        src="<%= item.image_url || '/images/products/default.png' %>"
+                                        alt="<%= item.name %>"
+                                        onerror="this.onerror=null;this.src='/images/products/default.png';"
+                                        class="cart-item-image"
+                                    >
+                                </div>
+
+                                <div class="cart-item-body">
+                                    <div class="d-flex justify-content-between gap-3 align-items-start flex-wrap">
+                                        <div>
+                                            <span class="cart-item-category"><%= item.category %></span>
+                                            <h2 class="cart-item-title"><%= item.name %></h2>
+                                        </div>
+
+                                        <div class="cart-item-line-total">
+                                            TZS <%= Number(item.line_total).toLocaleString() %>
+                                        </div>
+                                    </div>
+
+                                    <p class="cart-item-description"><%= item.description %></p>
+
+                                    <div class="cart-item-meta">
+                                        <div class="cart-item-quantity-controls">
+                                            <form action="/api/cart/items/<%= item.cart_item_id %>/adjust" method="POST" class="cart-quantity-form">
+                                                <input type="hidden" name="delta" value="-1">
+                                                <button type="submit" class="btn btn-outline-carryhub btn-sm cart-quantity-btn">-</button>
+                                            </form>
+
+                                            <span class="cart-quantity-value"><%= item.quantity %></span>
+
+                                            <form action="/api/cart/items/<%= item.cart_item_id %>/adjust" method="POST" class="cart-quantity-form">
+                                                <input type="hidden" name="delta" value="1">
+                                                <button type="submit" class="btn btn-outline-carryhub btn-sm cart-quantity-btn">+</button>
+                                            </form>
+                                        </div>
+
+                                        <form action="/api/cart/items/<%= item.cart_item_id %>/remove" method="POST" class="cart-remove-form">
+                                            <button type="submit" class="btn btn-link cart-remove-btn">
+                                                <i class="bi bi-trash"></i> Remove
+                                            </button>
+                                        </form>
+
+                                        <span>Unit price: TZS <%= Number(item.price).toLocaleString() %></span>
+                                    </div>
+                                </div>
+                            </article>
+                        <% }) %>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <aside class="cart-summary-card">
+                        <h2 class="cart-summary-title">Order Summary</h2>
+
+                        <div class="cart-summary-row">
+                            <span>Items</span>
+                            <strong><%= cartItemCount %></strong>
+                        </div>
+
+                        <div class="cart-summary-row total-row">
+                            <span>Subtotal</span>
+                            <strong>TZS <%= Number(cartSubtotal).toLocaleString() %></strong>
+                        </div>
+
+                        <a href="/products" class="btn btn-outline-carryhub w-100 mb-3">
+                            Continue Shopping
+                        </a>
+
+                        <button class="btn btn-carryhub w-100" type="button" disabled>
+                            Checkout Coming Soon
+                        </button>
+                    </aside>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="cart-empty-state">
+                <h2>Your cart is empty</h2>
+                <p>
+                    Add products from the shop and they will appear here on your account.
+                </p>
+
+                <a href="/products" class="btn btn-carryhub">
+                    Browse Products
+                </a>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>
