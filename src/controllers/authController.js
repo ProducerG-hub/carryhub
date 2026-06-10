@@ -28,7 +28,7 @@ module.exports.Register = async (req, res) => {
 };
 
 module.exports.Login = async (req, res) => {
-    const { email, password_hash, password } = req.body;
+    const { email, password_hash, password, next } = req.body;
     const rawPassword = password_hash || password;
 
     if (!email || !rawPassword) {
@@ -52,7 +52,9 @@ module.exports.Login = async (req, res) => {
             email: user.email,
             phone: user.phone
         };
-        res.redirect('/');
+
+        const safeNext = typeof next === 'string' && next.startsWith('/') ? next : '/';
+        res.redirect(safeNext);
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });

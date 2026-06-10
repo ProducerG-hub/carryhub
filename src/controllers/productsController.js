@@ -142,7 +142,7 @@ module.exports.getProducts = (req, res) => {
 // Get product by id
 module.exports.getProductById = (req , res)=>{
     const productId = req.params.id;
-    const productQuery = 'SELECT P.name AS  name, P.description AS description, P.price, P.stock_quantity, P.image_url, C.name AS category FROM products P JOIN categories C ON P.category_id = C.category_id WHERE P.product_id = $1 AND P.is_active = true AND C.is_active = true';
+    const productQuery = 'SELECT P.product_id, P.name AS  name, P.description AS description, P.price, P.stock_quantity, P.image_url, C.name AS category FROM products P JOIN categories C ON P.category_id = C.category_id WHERE P.product_id = $1 AND P.is_active = true AND C.is_active = true';
     try{
         pool.query(productQuery , [productId] , (err , result)=>{
             if(err){

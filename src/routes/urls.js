@@ -3,6 +3,7 @@ const categoryController = require('../controllers/categoryController');
 const productsController = require('../controllers/productsController');
 const authMiddleware = require('../middleware/auth');
 const urlController = require('../controllers/urlController');
+const cartController = require('../controllers/cartController');
 const express = require('express');
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.get('/', urlController.getHome);
 router.get('/login', urlController.getLogin);
 router.get('/register', urlController.getRegister);
 router.get('/profile', authMiddleware.isAuthenticated, urlController.getProfile);
+router.get('/cart', authMiddleware.requireLoginRedirect, cartController.getCart);
 
 // Authentication routes
 router.post('/api/auth/register', authController.Register);
@@ -34,4 +36,11 @@ router.post('/api/add-products', authMiddleware.isAuthenticated, productsControl
 router.put('/api/update-products/:id', authMiddleware.isAuthenticated, productsController.updateProduct);
 router.delete('/api/delete-products/:id', authMiddleware.isAuthenticated, productsController.deleteProduct);
 router.put('/api/restore-products/:id', authMiddleware.isAuthenticated, productsController.restoreProduct);
+
+// cart routes
+router.post('/api/cart/add', authMiddleware.requireLoginRedirect, cartController.addToCart);
+router.post('/api/cart/add/:productId', authMiddleware.requireLoginRedirect, cartController.addToCart);
+router.post('/api/cart/items/:cartItemId/adjust', authMiddleware.requireLoginRedirect, cartController.adjustCartItemQuantity);
+router.post('/api/cart/items/:cartItemId/remove', authMiddleware.requireLoginRedirect, cartController.removeCartItem);
+router.get('/api/cart', authMiddleware.isAuthenticated, cartController.getCartApi);
 module.exports = router;

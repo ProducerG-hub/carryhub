@@ -30,15 +30,6 @@
         </ul>
 
         <div class="desktop-right">
-
-            <form class="desktop-search">
-                <input
-                    type="search"
-                    class="form-control"
-                    placeholder="Search bags..."
-                >
-            </form>
-
             <% if (user) { %>
                 <div class="dropdown nav-user-dropdown">
                     <button
@@ -79,7 +70,7 @@
 
             <a href="/cart" class="cart-link">
                 🛒
-                <span class="cart-badge">0</span>
+                <span class="cart-badge"><%= typeof cartItemCount !== 'undefined' ? cartItemCount : 0 %></span>
             </a>
 
         </div>
@@ -107,16 +98,6 @@
                     height="45"
                 >
             </a>
-
-            <form class="mobile-search">
-
-                <input
-                    type="search"
-                    class="form-control"
-                    placeholder="Search bags..."
-                >
-
-            </form>
 
         </div>
 
@@ -175,7 +156,7 @@
                 🛒 Cart
 
                 <span class="cart-badge">
-                    0
+                    <%= typeof cartItemCount !== 'undefined' ? cartItemCount : 0 %>
                 </span>
 
             </a>

@@ -7,6 +7,7 @@ const pool = require('./src/config/db');
 const session = require('express-session');
 const router = require('./src/routes/urls');
 
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -22,6 +23,33 @@ app.set('views', path.join(__dirname,'src','views')); // Set the views directory
 
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
+    next();
+});
+
+app.use(async (req, res, next) => {
+    if (!req.session.user?.id) {
+        res.locals.cartItemCount = 0;
+        return next();
+    }
+
+    try {
+        const result = await pool.query(
+            `
+            SELECT COALESCE(SUM(ci.quantity), 0) AS total
+            FROM cart_items ci
+            JOIN cart ct
+                ON ci.cart_id = ct.cart_id
+            WHERE ct.user_id = $1
+            `,
+            [req.session.user.id]
+        );
+
+        res.locals.cartItemCount = parseInt(result.rows[0].total, 10) || 0;
+    } catch (error) {
+        console.log(error);
+        res.locals.cartItemCount = 0;
+    }
+
     next();
 });
 
