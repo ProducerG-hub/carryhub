@@ -19,6 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the 'public' directory
 app.set('view engine', 'ejs'); // Set EJS as the view engine
 app.set('views', path.join(__dirname,'src','views')); // Set the views directory
+
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
+
 app.use(router);
 
 

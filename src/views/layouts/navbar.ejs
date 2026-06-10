@@ -39,13 +39,43 @@
                 >
             </form>
 
-            <a href="/login" class="nav-action">
-                Login
-            </a>
+            <% if (user) { %>
+                <div class="dropdown nav-user-dropdown">
+                    <button
+                        class="btn nav-user-toggle dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <span class="nav-user-avatar">
+                            <%= user.full_name.charAt(0).toUpperCase() %>
+                        </span>
+                        <span class="nav-user-name"><%= user.full_name %></span>
+                    </button>
 
-            <a href="/register" class="nav-action">
-                Register
-            </a>
+                    <ul class="dropdown-menu dropdown-menu-end nav-user-menu">
+                        <li>
+                            <a class="dropdown-item" href="/profile">My profile</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form action="/api/auth/logout" method="POST" class="m-0">
+                                <button type="submit" class="dropdown-item text-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            <% } else { %>
+                <a href="/login" class="nav-action">
+                    Sign In
+                </a>
+
+                <a href="/register" class="nav-action">
+                    Sign Up
+                </a>
+            <% } %>
 
             <a href="/cart" class="cart-link">
                 🛒
@@ -101,6 +131,44 @@
             <a href="/products">
                  Shop
             </a>
+
+            <% if (user) { %>
+                <div class="dropdown nav-user-dropdown mobile-user-dropdown">
+                    <button
+                        class="btn nav-user-toggle dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <span class="nav-user-avatar">
+                            <%= user.full_name.charAt(0).toUpperCase() %>
+                        </span>
+                        <span class="nav-user-name"><%= user.full_name.split(' ')[0] %></span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end nav-user-menu">
+                        <li>
+                            <a class="dropdown-item" href="/profile">My profile</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form action="/api/auth/logout" method="POST" class="m-0">
+                                <button type="submit" class="dropdown-item text-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            <% } else { %>
+                <a href="/login">
+                    Sign In
+                </a>
+
+                <a href="/register">
+                    Sign Up
+                </a>
+            <% } %>
 
             <a href="/cart" class="mobile-cart">
 

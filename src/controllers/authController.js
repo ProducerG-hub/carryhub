@@ -3,9 +3,10 @@ const bcrypt = require('bcrypt');
 const pool = require('../config/db');
 
 module.exports.Register = async (req, res) => {
-    const { full_name, email, password_hash, phone } = req.body;
+    const { full_name, email, password_hash, password, phone } = req.body;
+    const rawPassword = password_hash || password;
     
-    if (!full_name || !email || !password_hash || !phone) {
+    if (!full_name || !email || !rawPassword || !phone) {
         return res.status(400).json({ success: false, message: 'All fields are required' });
     }
 
@@ -16,10 +17,10 @@ module.exports.Register = async (req, res) => {
         }
 
         const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
-        const hashedPassword = await bcrypt.hash(password_hash, saltRounds);
+        const hashedPassword = await bcrypt.hash(rawPassword, saltRounds);
         const result = await pool.query('INSERT INTO users (full_name, email, password_hash, phone) VALUES ($1, $2, $3, $4)', [full_name, email, hashedPassword, phone]);
 
-        res.status(201).json({ success: true, message: 'User registered successfully' });
+        res.redirect('/login');
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -27,8 +28,10 @@ module.exports.Register = async (req, res) => {
 };
 
 module.exports.Login = async (req, res) => {
-    const { email, password_hash } = req.body;
-    if (!email || !password_hash) {
+    const { email, password_hash, password } = req.body;
+    const rawPassword = password_hash || password;
+
+    if (!email || !rawPassword) {
         return res.status(400).json({ success: false, message: 'All fields are required' });
     }
 
@@ -38,7 +41,7 @@ module.exports.Login = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Bad credentials' });
         }
         const user = userResult.rows[0];
-        const passwordMatch = await bcrypt.compare(password_hash, user.password_hash);
+        const passwordMatch = await bcrypt.compare(rawPassword, user.password_hash);
         if (!passwordMatch) {
             return res.status(400).json({ success: false, message: 'Bad credentials' });
         }
@@ -49,7 +52,7 @@ module.exports.Login = async (req, res) => {
             email: user.email,
             phone: user.phone
         };
-        res.status(200).json({ success: true, message: 'Login successful' });
+        res.redirect('/');
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -63,7 +66,7 @@ module.exports.Logout = (req, res) => {
             return res.status(500).json({ success: false, message: 'Internal server error' });
         }
         res.clearCookie('connect.sid');
-        res.status(200).json({ success: true, message: 'Logout successful' });
+        return res.redirect('/login');
     });
 }
 
