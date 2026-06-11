@@ -1,0 +1,225 @@
+<%- include('../layouts/header', {
+    title: 'Checkout | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', { user: user }) %>
+
+<section class="checkout-page section-padding">
+
+    <div class="container-custom">
+
+        <div class="cart-hero mb-5">
+
+            <span class="hero-badge">
+                Final step before placing your order
+            </span>
+
+            <h1 class="section-title mb-2">
+                Checkout
+            </h1>
+
+            <p class="cart-summary-copy">
+                Confirm your shipping details and review your order.
+            </p>
+
+        </div>
+
+        <form
+            action="/checkout"
+            method="POST"
+        >
+
+            <div class="row g-4">
+
+                <!-- SHIPPING DETAILS -->
+
+                <div class="col-lg-8">
+
+                    <div class="checkout-card">
+
+                        <h2 class="checkout-card-title" style="color: var(--secondary-color)">
+                            Shipping Information
+                        </h2>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="full_name"
+                                    class="form-control"
+                                    value="<%= user.full_name %>"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    class="form-control"
+                                    value="<%= user.phone || '' %>"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Region
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="region"
+                                    class="form-control"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    District
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="district"
+                                    class="form-control"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+                                    Street Address
+                                </label>
+
+                                <textarea
+                                    name="address"
+                                    rows="4"
+                                    class="form-control"
+                                    required
+                                ></textarea>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+                                    Additional Notes
+                                </label>
+
+                                <textarea
+                                    name="notes"
+                                    rows="3"
+                                    class="form-control"
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ORDER SUMMARY -->
+
+                <div class="col-lg-4">
+
+                    <aside class="cart-summary-card">
+
+                        <h2 class="cart-summary-title">
+                            Order Summary
+                        </h2>
+
+                        <% items.forEach(item => { %>
+
+                            <div class="checkout-item">
+
+                                <span>
+                                    <%= item.name %>
+                                    - <%= item.quantity %>
+                                </span>
+
+                                <strong>
+                                    TZS
+                                    <%= Number(item.line_total).toLocaleString() %>
+                                </strong>
+
+                            </div>
+
+                        <% }) %>
+
+                        <hr>
+
+                        <div class="cart-summary-row">
+
+                            <span>Subtotal</span>
+
+                            <strong>
+                                TZS
+                                <%= Number(cartSubtotal).toLocaleString() %>
+                            </strong>
+
+                        </div>
+
+                        <div class="cart-summary-row">
+
+                            <span>Delivery</span>
+
+                            <strong>
+                                Free
+                            </strong>
+
+                        </div>
+
+                        <div class="cart-summary-row total-row">
+
+                            <span>Total</span>
+
+                            <strong>
+                                TZS
+                                <%= Number(cartSubtotal).toLocaleString() %>
+                            </strong>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-carryhub w-100 mt-3"
+                        >
+                            Place Order
+                        </button>
+
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>

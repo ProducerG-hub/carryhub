@@ -4,6 +4,7 @@ const productsController = require('../controllers/productsController');
 const authMiddleware = require('../middleware/auth');
 const urlController = require('../controllers/urlController');
 const cartController = require('../controllers/cartController');
+const checkoutController = require('../controllers/checkoutController');
 const express = require('express');
 const router = express.Router();
 
@@ -43,4 +44,5 @@ router.post('/api/cart/add/:productId', authMiddleware.requireLoginRedirect, car
 router.post('/api/cart/items/:cartItemId/adjust', authMiddleware.requireLoginRedirect, cartController.adjustCartItemQuantity);
 router.post('/api/cart/items/:cartItemId/remove', authMiddleware.requireLoginRedirect, cartController.removeCartItem);
 router.get('/api/cart', authMiddleware.isAuthenticated, cartController.getCartApi);
+router.get('/checkout', authMiddleware.requireLoginRedirect, checkoutController.getCheckoutPage);
 module.exports = router;
