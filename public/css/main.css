@@ -433,6 +433,49 @@ img {
     margin-bottom: 24px;
 }
 
+.checkout-card {
+
+    background: #fff;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+}
+
+.checkout-card-title {
+
+    margin-bottom: 25px;
+
+    font-size: 1.4rem;
+
+    font-weight: 700;
+}
+
+.checkout-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+    gap: 15px;
+}
+
+.checkout-page .form-control {
+
+    border-radius: 12px;
+
+    padding: 12px 15px;
+}
+
+.checkout-page textarea {
+
+    resize: none;
+}
+
 /* ==========================
    RESPONSIVE
 ========================== */

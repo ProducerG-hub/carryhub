@@ -31,3 +31,12 @@ module.exports.getCart = (req, res) => {
         cartItemCount: 0
     });
 }
+
+module.exports.getCheckout = (req, res) => {
+    res.render('pages/checkout', {
+        user: req.session.user,
+        items: [],
+        cartSubtotal: 0,
+        cartItemCount: 0
+    });
+}
