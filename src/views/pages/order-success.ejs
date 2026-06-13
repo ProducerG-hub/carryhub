@@ -1,0 +1,43 @@
+<%- include('../layouts/header', {
+    title: 'Order Successful | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', {
+    user: user
+}) %>
+
+<section class="section-padding">
+
+    <div class="container-custom text-center">
+
+        <div class="success-card">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h1>
+                Order Placed Successfully
+            </h1>
+
+            <p>
+                Your order
+                #<%= orderId %>
+                has been received.
+            </p>
+
+            <a
+                href="/orders/<%= orderId %>"
+                class="btn btn-carryhub"
+            >
+                View details
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>

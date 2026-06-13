@@ -1,0 +1,187 @@
+<%- include('../layouts/header', {
+    title: 'Order Details | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', {
+    user: user
+}) %>
+
+<section class="section-padding">
+
+    <div class="container-custom">
+
+        <div class="cart-hero mb-5">
+
+            <span class="hero-badge">
+                Order Tracking
+            </span>
+
+            <h1 class="section-title">
+                Order #<%= order.order_id %>
+            </h1>
+
+            <p class="cart-summary-copy">
+                View order information and purchased products.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- LEFT -->
+
+            <div class="col-lg-8">
+
+                <% items.forEach(item => { %>
+
+                    <article class="cart-item-card">
+
+                        <div class="cart-item-image-wrap">
+
+                            <img
+                                src="<%= item.image_url %>"
+                                alt="<%= item.name %>"
+                                onerror="this.onerror=null;this.src='/images/products/default.png';"
+                                class="cart-item-image"
+                            >
+
+                        </div>
+
+                        <div class="cart-item-body">
+
+                            <div class="d-flex justify-content-between flex-wrap">
+
+                                <h2 class="cart-item-title">
+                                    <%= item.name %>
+                                </h2>
+
+                                <div class="cart-item-line-total">
+
+                                    TZS
+                                    <%= Number(item.line_total).toLocaleString() %>
+
+                                </div>
+
+                            </div>
+
+                            <p class="cart-item-description">
+                                <%= item.description %>
+                            </p>
+
+                            <div class="cart-item-meta">
+
+                                <span>
+                                    Quantity:
+                                    <strong>
+                                        <%= item.quantity %>
+                                    </strong>
+                                </span>
+
+                                <span>
+                                    Unit Price:
+                                    <strong>
+                                        TZS
+                                        <%= Number(item.unit_price).toLocaleString() %>
+                                    </strong>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="col-lg-4">
+
+                <aside class="cart-summary-card">
+
+                    <h2 class="cart-summary-title">
+                        Order Summary
+                    </h2>
+
+                    <div class="cart-summary-row">
+
+                        <span>Status</span>
+
+                        <span class="order-status status-<%= order.status.toLowerCase() %>">
+                            <%= order.status %>
+                        </span>
+
+                    </div>
+
+                    <div class="cart-summary-row">
+
+                        <span>Order Date</span>
+
+                        <strong>
+                            <%= new Date(order.order_date).toLocaleDateString() %>
+                        </strong>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-3">
+
+                        <h6>
+                            Shipping Address
+                        </h6>
+
+                        <p class="mb-0">
+                            <%= order.shipping_address %>
+                        </p>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <h6>
+                            Order Notes
+                        </h6>
+
+                        <p class="mb-0">
+                            <%= order.notes%>
+                        </p>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="cart-summary-row total-row">
+
+                        <span>Total</span>
+
+                        <strong>
+
+                            TZS
+                            <%= Number(order.total_amount).toLocaleString() %>
+
+                        </strong>
+
+                    </div>
+
+                    <a
+                        href="/orders"
+                        class="btn btn-outline-carryhub w-100 mt-3"
+                    >
+                        Back To Orders
+                    </a>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>
