@@ -40,3 +40,19 @@ module.exports.getCheckout = (req, res) => {
         cartItemCount: 0
     });
 }
+
+module.exports.orderSuccess = (
+    req,
+    res
+) => {
+
+    res.render(
+        'pages/order-success',
+        {
+            user: req.session.user,
+            orderId:
+                req.params.orderId
+        }
+    );
+
+};

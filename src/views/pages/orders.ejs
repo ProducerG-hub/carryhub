@@ -1,0 +1,142 @@
+<%- include('../layouts/header', {
+    title: 'My Orders | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', {
+    user: user
+}) %>
+
+<section class="section-padding">
+
+    <div class="container-custom">
+
+        <div class="cart-hero mb-5">
+
+            <span class="hero-badge">
+                Purchase history
+            </span>
+
+            <h1 class="section-title">
+                My Orders
+            </h1>
+
+            <p class="cart-summary-copy">
+                Track all your purchases and delivery status.
+            </p>
+
+        </div>
+
+        <% if(orders.length > 0){ %>
+
+            <div class="row g-4">
+
+                <% orders.forEach(order => { %>
+
+                    <div class="col-md-6">
+
+                        <div class="order-card">
+
+                            <div class="order-card-header">
+
+                                <div>
+
+                                    <small>
+                                        Order
+                                    </small>
+
+                                    <h5>
+                                        #<%= order.order_id %>
+                                    </h5>
+
+                                </div>
+
+                                <span class="order-status status-<%= order.status.toLowerCase() %>">
+                                    <%= order.status %>
+                                </span>
+
+                            </div>
+
+                            <div class="order-card-body">
+
+                                <div class="order-meta">
+
+                                    <span>
+                                        Date
+                                    </span>
+
+                                    <strong>
+                                        <%= new Date(order.order_date).toLocaleDateString() %>
+                                    </strong>
+
+                                </div>
+
+                                <div class="order-meta">
+
+                                    <span>
+                                        Items
+                                    </span>
+
+                                    <strong>
+                                        <%= order.item_count %>
+                                    </strong>
+
+                                </div>
+
+                                <div class="order-meta">
+
+                                    <span>
+                                        Total
+                                    </span>
+
+                                    <strong>
+                                        TZS <%= Number(order.total_amount).toLocaleString() %>
+                                    </strong>
+
+                                </div>
+
+                                <a
+                                    href="/orders/<%= order.order_id %>"
+                                    class="btn btn-carryhub w-100 mt-3"
+                                >
+                                    View Details
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } else { %>
+
+            <div class="cart-empty-state">
+
+                <h2>
+                    No Orders Yet
+                </h2>
+
+                <p>
+                    Your orders will appear here once you place them.
+                </p>
+
+                <a
+                    href="/products"
+                    class="btn btn-carryhub"
+                >
+                    Start Shopping
+                </a>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>

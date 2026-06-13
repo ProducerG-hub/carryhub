@@ -476,6 +476,145 @@ img {
     resize: none;
 }
 
+.success-card{
+
+    max-width:600px;
+
+    margin:auto;
+
+    background:#fff;
+
+    padding:50px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.success-icon{
+
+    width:80px;
+
+    height:80px;
+
+    margin:auto auto 20px;
+
+    font-size:40px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+}
+
+.order-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+
+    height:100%;
+}
+
+.order-card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.order-meta{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+}
+
+.order-status{
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:.8rem;
+
+    font-weight:600;
+}
+
+.status-pending{
+
+    background:#fff3cd;
+}
+
+.status-paid{
+
+    background:#d1e7dd;
+}
+
+.status-shipped{
+
+    background:#cfe2ff;
+}
+
+.status-delivered{
+
+    background:#d1e7dd;
+}
+
+.status-cancelled{
+
+    background:#f8d7da;
+}
+
+.order-status{
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:.85rem;
+
+    font-weight:600;
+}
+
+.status-pending{
+
+    background:#fff3cd;
+}
+
+.status-paid{
+
+    background:#d1e7dd;
+}
+
+.status-shipped{
+
+    background:#cfe2ff;
+}
+
+.status-delivered{
+
+    background:#d1e7dd;
+}
+
+.status-cancelled{
+
+    background:#f8d7da;
+}
+
 /* ==========================
    RESPONSIVE
 ========================== */

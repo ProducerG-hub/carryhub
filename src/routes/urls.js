@@ -45,4 +45,13 @@ router.post('/api/cart/items/:cartItemId/adjust', authMiddleware.requireLoginRed
 router.post('/api/cart/items/:cartItemId/remove', authMiddleware.requireLoginRedirect, cartController.removeCartItem);
 router.get('/api/cart', authMiddleware.isAuthenticated, cartController.getCartApi);
 router.get('/checkout', authMiddleware.requireLoginRedirect, checkoutController.getCheckoutPage);
+router.post('/checkout', authMiddleware.requireLoginRedirect, checkoutController.placeOrder);
+
+router.get('/orders', authMiddleware.requireLoginRedirect, checkoutController.getOrders);
+router.get(
+    '/orders/:orderId',
+    authMiddleware.isAuthenticated,
+    checkoutController.getOrderDetails
+);
+router.get('/order-success/:orderId/', authMiddleware.requireLoginRedirect, urlController.orderSuccess);
 module.exports = router;
