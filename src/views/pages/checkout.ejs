@@ -146,8 +146,8 @@
 
                     <aside class="cart-summary-card">
 
-                        <h2 class="cart-summary-title">
-                            Order Summary
+                        <h2 class="cart-summary-title text-center" style="color: var(--secondary-color)">
+                            ORDER SUMMARY
                         </h2>
 
                         <% items.forEach(item => { %>
@@ -193,9 +193,9 @@
 
                         <div class="cart-summary-row total-row">
 
-                            <span>Total</span>
+                            <span><strong style="color: var(--secondary-color)">Total</strong></span>
 
-                            <strong>
+                            <strong style="color: var(--secondary-color)">
                                 TZS
                                 <%= Number(cartSubtotal).toLocaleString() %>
                             </strong>
