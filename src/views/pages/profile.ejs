@@ -2,70 +2,276 @@
     title: 'My Profile | CarryHub'
 }) %>
 
-<%- include('../layouts/navbar') %>
+<%- include('../layouts/navbar', { user: user }) %>
 
 <section class="section-padding">
+
     <div class="container-custom">
+
+        <!-- Page Heading -->
+
         <div class="section-title text-start mb-4">
-            <h1>My Profile</h1>
-            <p>View your account details and manage your session.</p>
+
+            <h1>
+                Welcome Back,
+                <%= user.full_name.split(' ')[0] %>
+            </h1>
+
+            <p>
+                Manage your account, orders and shopping activity.
+            </p>
+
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+
+            <div class="col-lg-10">
+
                 <div class="auth-panel">
+
+                    <!-- Profile Summary -->
+
                     <div class="profile-summary">
+
                         <div class="profile-avatar-large">
-                            <%= user.full_name.charAt(0).toUpperCase() %>
+
+                            <%= user.full_name
+                                .split(' ')
+                                .map(name => name[0])
+                                .join('')
+                                .substring(0, 2)
+                                .toUpperCase()
+                            %>
+
                         </div>
 
                         <div>
-                            <h2 class="mb-1"><%= user.full_name %></h2>
-                            <p class="mb-0 text-muted"><%= user.email %></p>
+
+                            <h2 class="mb-1">
+                                <%= user.full_name %>
+                            </h2>
+
+                            <p class="mb-0 text-muted">
+                                <%= user.email %>
+                            </p>
+
                         </div>
+
                     </div>
+
+                    <!-- Statistics -->
 
                     <div class="row g-3 mt-4">
-                        <div class="col-md-6">
-                            <div class="profile-info-card">
-                                <span>Full name</span>
-                                <strong><%= user.full_name %></strong>
+
+                        <div class="col-md-4">
+
+                            <div class="profile-stat-card">
+
+                                <h3>
+                                    <%= totalOrders || 0 %>
+                                </h3>
+
+                                <span>
+                                    Total Orders
+                                </span>
+
                             </div>
+
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="profile-info-card">
-                                <span>Email</span>
-                                <strong><%= user.email %></strong>
+                        <div class="col-md-4">
+
+                            <div class="profile-stat-card">
+
+                                <h3>
+                                    <%= pendingOrders || 0 %>
+                                </h3>
+
+                                <span>
+                                    Pending Orders
+                                </span>
+
                             </div>
+
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="profile-info-card">
-                                <span>Phone</span>
-                                <strong><%= user.phone || 'Not provided' %></strong>
+                        <div class="col-md-4">
+
+                            <div class="profile-stat-card">
+
+                                <h3>
+                                    <%= deliveredOrders || 0 %>
+                                </h3>
+
+                                <span>
+                                    Delivered Orders
+                                </span>
+
                             </div>
+
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="profile-info-card">
-                                <span>Account status</span>
-                                <strong>Signed in</strong>
-                            </div>
-                        </div>
                     </div>
 
+                    <!-- Account Information -->
+
+                    <div class="row g-3 mt-4">
+
+                        <div class="col-md-6">
+
+                            <div class="profile-info-card">
+
+                                <span>
+                                    Full Name
+                                </span>
+
+                                <strong>
+                                    <%= user.full_name %>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="profile-info-card">
+
+                                <span>
+                                    Email Address
+                                </span>
+
+                                <strong>
+                                    <%= user.email %>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="profile-info-card">
+
+                                <span>
+                                    Phone Number
+                                </span>
+
+                                <strong>
+                                    <%= user.phone || 'Not Provided' %>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="profile-info-card">
+
+                                <span>
+                                    Member Since
+                                </span>
+
+                                <strong>
+                                    <%= new Date(user.created_at).toLocaleDateString() %>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="profile-info-card">
+
+                                <span>
+                                    Account Status
+                                </span>
+
+                                <strong>
+                                    Signed In
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="profile-info-card">
+
+                                <span>
+                                    Role
+                                </span>
+
+                                <strong>
+                                    <%= user.role || 'Customer' %>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Quick Actions -->
 
                     <div class="d-flex gap-3 mt-4 flex-wrap">
-                        <a href="/orders" class="btn btn-carryhub">My Orders</a>
-                        <form action="/api/auth/logout" method="POST" class="m-0">
-                            <button type="submit" class="btn btn-outline-carryhub">Logout</button>
+
+                        <a
+                            href="/orders"
+                            class="btn btn-carryhub"
+                        >
+                            My Orders
+                        </a>
+
+                        <a
+                            href="/cart"
+                            class="btn btn-outline-carryhub"
+                        >
+                            Shopping Cart
+                        </a>
+
+                        <a
+                            href="/products"
+                            class="btn btn-outline-carryhub"
+                        >
+                            Continue Shopping
+                        </a>
+
+                        <a
+                            href="/profile/edit"
+                            class="btn btn-outline-carryhub"
+                        >
+                            Edit Profile
+                        </a>
+
+                        <form
+                            action="/api/auth/logout"
+                            method="POST"
+                            class="m-0"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-carryhub"
+                            >
+                                Logout
+                            </button>
+
                         </form>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
 
 <%- include('../layouts/footer') %>

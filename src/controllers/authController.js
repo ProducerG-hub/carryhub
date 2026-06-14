@@ -50,7 +50,8 @@ module.exports.Login = async (req, res) => {
             id: user.user_id,
             full_name: user.full_name,
             email: user.email,
-            phone: user.phone
+            phone: user.phone,
+            created_at: user.created_at
         };
 
         const safeNext = typeof next === 'string' && next.startsWith('/') ? next : '/';
@@ -72,9 +73,62 @@ module.exports.Logout = (req, res) => {
     });
 }
 
-module.exports.userProfile = (req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+module.exports.userProfile = async (req, res) => {
+
+    try {
+
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
+        const userId = req.session.user.id;
+
+        const totalOrdersQuery = `
+            SELECT COUNT(*) AS total_orders
+            FROM orders
+            WHERE user_id = $1
+        `;
+
+        const pendingOrdersQuery = `
+            SELECT COUNT(*) AS pending_orders
+            FROM orders
+            WHERE user_id = $1
+            AND status = 'PENDING'
+        `;
+
+        const deliveredOrdersQuery = `
+            SELECT COUNT(*) AS delivered_orders
+            FROM orders
+            WHERE user_id = $1
+            AND status = 'DELIVERED'
+        `;
+
+        const totalOrdersResult = await pool.query(totalOrdersQuery, [userId]);
+        const pendingOrdersResult = await pool.query(pendingOrdersQuery, [userId]);
+        const deliveredOrdersResult = await pool.query(deliveredOrdersQuery, [userId]);
+
+        res.render('pages/profile', {
+
+            user: req.session.user,
+            totalOrders: totalOrdersResult.rows[0].total_orders,
+            pendingOrders: pendingOrdersResult.rows[0].pending_orders,
+            deliveredOrders: deliveredOrdersResult.rows[0].delivered_orders
+
+        });
+
     }
-    res.status(200).json({ success: true, user: req.session.user });
-}
+     catch (error) {
+
+        console.log(error);
+
+         res.render('pages/profile', {
+        user: req.session.user,
+        totalOrders: 0,
+        pendingOrders: 0,
+        deliveredOrders: 0
+    });
+
+    }
+
+};
