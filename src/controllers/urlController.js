@@ -17,12 +17,6 @@ module.exports.getRegister = (req, res) => {
     });
 }
 
-module.exports.getProfile = (req, res) => {
-    res.render('pages/profile', {
-        user: req.session.user
-    });
-}
-
 module.exports.getCart = (req, res) => {
     res.render('pages/cart', {
         user: req.session.user,

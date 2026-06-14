@@ -136,6 +136,28 @@ module.exports.addToCart = async (req, res) => {
         } else {
 
             // 5. Insert new item
+            if (quantity < 1) {
+                return res.status(400).send('Quantity must be at least 1');
+            }
+
+            // before inserting check if the product exists and has enough stock
+            const productResult = await pool.query(
+                `
+                SELECT stock_quantity
+                FROM products
+                WHERE product_id = $1
+                `,
+                [productId]
+            );
+
+            if (productResult.rows.length === 0) {
+                return res.status(404).send('Product not found');
+            }
+
+            const product = productResult.rows[0];
+            if (quantity > product.stock_quantity) {
+                return res.status(400).send('Not enough stock available');
+            }
 
             await pool.query(
                 `
@@ -204,22 +226,63 @@ module.exports.getCartApi = async (req, res) => {
 };
 
 module.exports.adjustCartItemQuantity = async (req, res) => {
-    try {
-        const userId = req.session.user.id;
-        const cartItemId = parseInt(req.params.cartItemId, 10);
-        const delta = parseInt(req.body.delta, 10);
 
-        if (!Number.isInteger(cartItemId) || !Number.isInteger(delta) || ![-1, 1].includes(delta)) {
-            return res.status(400).send('Invalid cart update request');
+    try {
+
+        const userId = req.session.user.id;
+
+        const cartItemId =
+            parseInt(req.params.cartItemId, 10);
+
+        const delta =
+            parseInt(req.body.delta, 10);
+
+        if (
+            !Number.isInteger(cartItemId) ||
+            !Number.isInteger(delta) ||
+            ![-1, 1].includes(delta)
+        ) {
+
+            return res
+                .status(400)
+                .send('Invalid cart update request');
+
         }
 
-        const cartItem = await getCartItemOwnership(userId, cartItemId);
+        const cartItem =
+            await getCartItemOwnership(
+                userId,
+                cartItemId
+            );
 
         if (!cartItem) {
-            return res.status(404).send('Cart item not found');
+
+            return res
+                .status(404)
+                .send('Cart item not found');
+
         }
 
+        // =====================================
+        // INCREASE QUANTITY
+        // =====================================
+
         if (delta > 0) {
+
+            const newQuantity =
+                cartItem.quantity + 1;
+
+            if (
+                newQuantity >
+                cartItem.stock_quantity
+            ) {
+
+                return res.status(400).send(
+                    `${cartItem.name} only has ${cartItem.stock_quantity} items available in stock`
+                );
+
+            }
+
             await pool.query(
                 `
                 UPDATE cart_items
@@ -228,7 +291,15 @@ module.exports.adjustCartItemQuantity = async (req, res) => {
                 `,
                 [cartItemId]
             );
-        } else if (cartItem.quantity > 1) {
+
+        }
+
+        // =====================================
+        // DECREASE QUANTITY
+        // =====================================
+
+        else if (cartItem.quantity > 1) {
+
             await pool.query(
                 `
                 UPDATE cart_items
@@ -237,7 +308,15 @@ module.exports.adjustCartItemQuantity = async (req, res) => {
                 `,
                 [cartItemId]
             );
-        } else {
+
+        }
+
+        // =====================================
+        // REMOVE ITEM
+        // =====================================
+
+        else {
+
             await pool.query(
                 `
                 DELETE FROM cart_items
@@ -245,13 +324,21 @@ module.exports.adjustCartItemQuantity = async (req, res) => {
                 `,
                 [cartItemId]
             );
+
         }
 
         return res.redirect('/cart');
+
     } catch (error) {
+
         console.log(error);
-        return res.status(500).send('Error updating cart item');
+
+        return res
+            .status(500)
+            .send('Error updating cart item');
+
     }
+
 };
 
 module.exports.removeCartItem = async (req, res) => {

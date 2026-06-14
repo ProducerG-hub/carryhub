@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', urlController.getHome);
 router.get('/login', urlController.getLogin);
 router.get('/register', urlController.getRegister);
-router.get('/profile', authMiddleware.isAuthenticated, urlController.getProfile);
+router.get('/profile', authMiddleware.isAuthenticated, authController.userProfile);
 router.get('/cart', authMiddleware.requireLoginRedirect, cartController.getCart);
 
 // Authentication routes
