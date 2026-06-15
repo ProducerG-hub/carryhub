@@ -59,7 +59,8 @@ module.exports.getCheckoutPage = async (req, res) => {
             {
                 user: req.session.user,
                 items,
-                cartSubtotal
+                cartSubtotal,
+                paypalClientId: process.env.PAYPAL_CLIENT_ID
             }
         );
 

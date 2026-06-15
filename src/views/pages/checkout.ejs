@@ -24,10 +24,7 @@
 
         </div>
 
-        <form
-            action="/checkout"
-            method="POST"
-        >
+        <div class="checkout-form-wrapper">
 
             <div class="row g-4">
 
@@ -37,7 +34,10 @@
 
                     <div class="checkout-card">
 
-                        <h2 class="checkout-card-title" style="color: var(--secondary-color)">
+                        <h2
+                            class="checkout-card-title"
+                            style="color: var(--secondary-color)"
+                        >
                             Shipping Information
                         </h2>
 
@@ -54,7 +54,7 @@
                                     name="full_name"
                                     class="form-control"
                                     value="<%= user.full_name %>"
-                                    required
+                                    readonly
                                 >
 
                             </div>
@@ -146,7 +146,10 @@
 
                     <aside class="cart-summary-card">
 
-                        <h2 class="cart-summary-title text-center" style="color: var(--secondary-color)">
+                        <h2
+                            class="cart-summary-title text-center"
+                            style="color: var(--secondary-color)"
+                        >
                             ORDER SUMMARY
                         </h2>
 
@@ -156,7 +159,7 @@
 
                                 <span>
                                     <%= item.name %>
-                                    - <%= item.quantity %>
+                                    × <%= item.quantity %>
                                 </span>
 
                                 <strong>
@@ -172,7 +175,9 @@
 
                         <div class="cart-summary-row">
 
-                            <span>Subtotal</span>
+                            <span>
+                                Subtotal
+                            </span>
 
                             <strong>
                                 TZS
@@ -183,7 +188,9 @@
 
                         <div class="cart-summary-row">
 
-                            <span>Delivery</span>
+                            <span>
+                                Delivery
+                            </span>
 
                             <strong>
                                 Free
@@ -193,7 +200,11 @@
 
                         <div class="cart-summary-row total-row">
 
-                            <span><strong style="color: var(--secondary-color)">Total</strong></span>
+                            <span>
+                                <strong style="color: var(--secondary-color)">
+                                    Total
+                                </strong>
+                            </span>
 
                             <strong style="color: var(--secondary-color)">
                                 TZS
@@ -202,17 +213,19 @@
 
                         </div>
 
-                        <form action="/checkout" method="POST" class="mt-4">
+                        <hr>
 
-                            <button
-                            type="submit"
-                            class="btn btn-carryhub w-100 mt-3"
+                        <p
+                            class="text-center mb-3"
+                            style="font-size: 0.95rem;"
                         >
-                            Place Order
-                        </button>
+                            Secure payment powered by PayPal
+                        </p>
 
-
-                        </form>
+                        <div
+                            id="paypal-button-container"
+                            class="mt-3"
+                        ></div>
 
                     </aside>
 
@@ -220,11 +233,140 @@
 
             </div>
 
-        </form>
+        </div>
 
     </div>
 
 </section>
+
+<script src="https://www.paypal.com/sdk/js?client-id=<%= paypalClientId %>&currency=USD"></script>
+
+<script>
+
+paypal.Buttons({
+
+    createOrder() {
+
+        const region =
+            document.querySelector(
+                '[name="region"]'
+            ).value.trim();
+
+        const district =
+            document.querySelector(
+                '[name="district"]'
+            ).value.trim();
+
+        const address =
+            document.querySelector(
+                '[name="address"]'
+            ).value.trim();
+
+        if (
+            !region ||
+            !district ||
+            !address
+        ) {
+
+            alert(
+                'Please complete all shipping information first.'
+            );
+
+            return;
+        }
+
+        return fetch(
+            '/api/paypal/create-order',
+            {
+                method: 'POST'
+            }
+        )
+        .then(response => response.json())
+        .then(data => data.id);
+
+    },
+
+    onApprove(data) {
+
+        return fetch(
+            '/api/paypal/capture-order',
+            {
+                method: 'POST',
+
+                headers: {
+                    'Content-Type':
+                        'application/json'
+                },
+
+                body: JSON.stringify({
+
+                    paypalOrderId:
+                        data.orderID,
+
+                    region:
+                        document.querySelector(
+                            '[name="region"]'
+                        ).value,
+
+                    district:
+                        document.querySelector(
+                            '[name="district"]'
+                        ).value,
+
+                    address:
+                        document.querySelector(
+                            '[name="address"]'
+                        ).value,
+
+                    phone:
+                        document.querySelector(
+                            '[name="phone"]'
+                        ).value,
+
+                    notes:
+                        document.querySelector(
+                            '[name="notes"]'
+                        ).value
+
+                })
+
+            }
+        )
+        .then(response => response.json())
+        .then(data => {
+
+            if (data.success) {
+
+                window.location.href =
+                    `/order-success/${data.orderId}`;
+
+            } else {
+
+                alert(
+                    data.message ||
+                    'Payment processing failed'
+                );
+
+            }
+
+        });
+
+    },
+
+    onError(error) {
+
+        console.error(error);
+
+        alert(
+            'PayPal payment failed. Please try again.'
+        );
+
+    }
+
+})
+.render('#paypal-button-container');
+
+</script>
 
 <%- include('../layouts/footer') %>
 <%- include('../layouts/scripts') %>
