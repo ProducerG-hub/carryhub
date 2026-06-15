@@ -1,0 +1,69 @@
+<div class="admin-wrapper">
+
+    <!-- Sidebar -->
+
+    <aside class="admin-sidebar">
+
+        <div class="admin-logo">
+
+            <h3>
+                CarryHub
+            </h3>
+
+            <span>
+                Admin Panel
+            </span>
+
+        </div>
+
+        <nav class="admin-nav">
+
+            <a
+                href="/admin/dashboard"
+                class="admin-link"
+            >
+                <i class="bi bi-grid"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="/admin/products"
+                class="admin-link"
+            >
+                <i class="bi bi-bag"></i>
+                Products
+            </a>
+
+            <a
+                href="/admin/orders"
+                class="admin-link"
+            >
+                <i class="bi bi-receipt"></i>
+                Orders
+            </a>
+
+            <a
+                href="/admin/customers"
+                class="admin-link"
+            >
+                <i class="bi bi-people"></i>
+                Customers
+            </a>
+
+            <form
+                action="/api/auth/logout"
+                method="POST"
+                class="mt-auto"
+            >
+                <button
+                    type="submit"
+                    class="logout-btn"
+                >
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </button>
+            </form>
+
+        </nav>
+
+    </aside>

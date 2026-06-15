@@ -7,6 +7,7 @@ const cartController = require('../controllers/cartController');
 const checkoutController = require('../controllers/checkoutController');
 const paypalController = require('../controllers/paypalController');
 const capturePaypalController = require('../controllers/capture.paypal');
+const adminController = require('../controllers/adminController');
 const express = require('express');
 const router = express.Router();
 
@@ -60,4 +61,8 @@ router.get('/order-success/:orderId/', authMiddleware.requireLoginRedirect, urlC
 //paypal routes
 router.post('/api/paypal/create-order', authMiddleware.requireLoginRedirect, paypalController.createPaypalOrder);
 router.post('/api/paypal/capture-order', authMiddleware.requireLoginRedirect, capturePaypalController.capturePaypalOrder);
+
+//admin routes
+router.get('/admin/dashboard', authMiddleware.isAdmin, adminController.dashboard);
+router.get('/admin/products', authMiddleware.isAdmin, adminController.adminProducts);
 module.exports = router;
