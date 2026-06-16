@@ -51,11 +51,18 @@ module.exports.Login = async (req, res) => {
             full_name: user.full_name,
             email: user.email,
             phone: user.phone,
-            created_at: user.created_at
+            created_at: user.created_at,
+            role: user.role
         };
+
+        // Redirect admin users to the admin dashboard
+        if (user.role === 'admin') {
+            return res.redirect('/admin/dashboard');
+        }
 
         const safeNext = typeof next === 'string' && next.startsWith('/') ? next : '/';
         res.redirect(safeNext);
+
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });

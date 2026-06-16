@@ -1,0 +1,254 @@
+/* ===================================
+   ROOT VARIABLES
+=================================== */
+:root {
+    --primary-color: #111827;
+    --secondary-color: #8B5E3C;
+    --white-color: #FFFFFF;
+    --red-color: #EF4444;
+
+    --text-dark: #1F2937;
+    --text-light: #6B7280;
+
+    --border-color: #E5E7EB;
+    --background-light: #F9FAFB;
+
+    --transition: all 0.3s ease;
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+
+    --container-width: 1200px;
+}
+
+.admin-wrapper{
+    display:flex;
+    min-height:100vh;
+}
+
+.admin-sidebar{
+    width:260px;
+    background:var(--primary-color);
+    color:var(--white-color);
+    padding:30px 20px;
+}
+
+.admin-logo{
+    margin-bottom:40px;
+}
+
+.admin-logo h3{
+    color:var(--white-color);
+    margin:0;
+}
+
+.admin-logo span{
+    color:var(--text-light);
+    font-size:.9rem;
+}
+
+.admin-nav{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.admin-link{
+    color:var(--white-color);
+    text-decoration:none;
+    padding:12px;
+    border-radius:10px;
+    transition:var(--transition);
+}
+
+.admin-link:hover{
+    background:var(--secondary-color);
+    color:var(--white-color);
+}
+
+.logout-btn{
+    width:100%;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    background:var(--red-color);
+    color:var(--white-color);
+}
+
+.admin-content{
+    flex:1;
+    background:var(--background-light);
+}
+
+.admin-topbar{
+    background:var(--white-color);
+    padding:20px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--border-color);
+}
+
+.admin-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:var(--secondary-color);
+    color:var(--white-color);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.dashboard-content{
+    padding:30px;
+}
+
+.stat-card{
+    background:var(--white-color);
+    border-radius:16px;
+    padding:25px;
+    box-shadow:var(--shadow-sm);
+}
+
+.stat-card h6{
+    color:var(--text-light);
+}
+
+.stat-card h2{
+    margin-top:10px;
+    color:var(--text-dark);
+}
+
+.dashboard-panel{
+    background: var(--white-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    height: 100%;
+}
+
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.panel-header h5{
+    margin:0;
+    color: var(--primary-color);
+    font-weight:600;
+}
+
+.panel-link{
+    text-decoration:none;
+    color: var(--secondary-color);
+    font-weight:600;
+}
+
+.stock-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+}
+
+.stock-item:last-child{
+    border-bottom:none;
+}
+
+.stock-badge{
+    background:#fff3cd;
+    color:#856404;
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:.85rem;
+    font-weight:600;
+}
+
+.status-badge{
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:.8rem;
+    font-weight:600;
+}
+
+.status-paid{
+    background:#d4edda;
+    color:#155724;
+}
+
+.status-pending{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status-shipped{
+    background:#cce5ff;
+    color:#004085;
+}
+
+.status-delivered{
+    background:#d1f7d6;
+    color:#0f5132;
+}
+
+.status-cancelled{
+    background:#f8d7da;
+    color:#721c24;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.product-thumb{
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.btn-carryhub {
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-carryhub:hover {
+    background-color: #72492d;
+    color: var(--white-color);
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.product-thumb{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:10px;
+}

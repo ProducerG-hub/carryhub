@@ -1,0 +1,228 @@
+<%- include('../layouts/admin-header', {
+    title: 'Admin Dashboard'
+}) %>
+
+<%- include('../layouts/admin-sidebar') %>
+
+<%- include('../layouts/admin-topbar', {
+    user
+}) %>
+
+<div class="dashboard-content">
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="stat-card">
+
+                <h6 style="color: var(--secondary-color);">
+                    Total Products
+                </h6>
+
+                <h2>
+                    <%= totalProducts %>
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="stat-card">
+
+                <h6 style="color: var(--secondary-color);">
+                    Total Orders
+                </h6>
+
+                <h2>
+                    <%= totalOrders %>
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="stat-card">
+
+                <h6 style="color: var(--secondary-color);">
+                    Customers
+                </h6>
+
+                <h2>
+                    <%= totalCustomers %>
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="stat-card">
+
+                <h6 style="color: var(--secondary-color);">
+                    Revenue
+                </h6>
+
+                <h2>
+                    TZS <%= Number(totalRevenue).toLocaleString() %>
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-2 g-4">
+
+    <!-- Recent Orders -->
+
+    <div class="col-lg-8">
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <h5 style="color: var(--secondary-color);">
+                    Recent Orders
+                </h5>
+
+                <a
+                    href="/admin/orders"
+                    class="panel-link"
+                >
+                    View All
+                </a>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Customer</th>
+
+                            <th>Amount</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <% recentOrders.forEach(order => { %>
+
+                            <tr>
+
+                                <td>
+                                    #<%= order.order_id %>
+                                </td>
+
+                                <td>
+                                    <%= order.full_name %>
+                                </td>
+
+                                <td>
+                                    TZS
+                                    <%= Number(order.total_amount).toLocaleString() %>
+                                </td>
+
+                                <td>
+
+                                    <span class="status-badge status-<%= order.status.toLowerCase() %>">
+
+                                        <%= order.status %>
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        <% }) %>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Low Stock -->
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <h5 style="color: var(--red-color);">
+                    Low Stock
+                </h5>
+
+            </div>
+
+            <% if(lowStockProducts.length > 0){ %>
+
+                <% lowStockProducts.forEach(product => { %>
+
+                    <div class="stock-item">
+
+                        <div>
+
+                            <strong>
+                                <%= product.name %>
+                            </strong>
+
+                        </div>
+
+                        <span class="stock-badge">
+
+                            <%= product.stock_quantity %>
+
+                            left
+
+                        </span>
+
+                    </div>
+
+                <% }) %>
+
+            <% } else { %>
+
+                <p class="mb-0">
+                    All products are sufficiently stocked.
+                </p>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+</div>
+
+
+
+<%- include('../layouts/admin-footer') %>
