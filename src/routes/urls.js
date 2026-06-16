@@ -25,21 +25,21 @@ router.post('/api/auth/logout', authController.Logout);
 router.get('/api/auth/profile', authMiddleware.isAuthenticated, authController.userProfile);
 
 //category routes
-router.get('/api/categories', categoryController.getCategories);
+router.get('/categories', categoryController.getCategories);
 router.get('/api/categories/:id', categoryController.getCategoryById);
 router.post('/api/add-categories', authMiddleware.isAuthenticated, categoryController.addCategory);
-router.put('/api/update-categories/:id', authMiddleware.isAuthenticated, categoryController.updateCategory);
-router.delete('/api/delete-categories/:id', authMiddleware.isAuthenticated, categoryController.deleteCategory);   
-router.put('/api/restore-categories/:id', authMiddleware.isAuthenticated, categoryController.restoreCategory);
+router.post('/api/update-categories/:id', authMiddleware.isAuthenticated, categoryController.updateCategory);
+router.post('/api/delete-categories/:id', authMiddleware.isAuthenticated, categoryController.deleteCategory);
+router.post('/api/restore-categories/:id', authMiddleware.isAuthenticated, categoryController.restoreCategory);
 
 // product routes
 router.get('/products', productsController.getProducts);
 router.get('/products/:id', productsController.getProductById);
 router.get('/api/products/category/:categoryId', productsController.getProductsByCategoryId);
 router.post('/api/add-products', authMiddleware.isAuthenticated, productsController.addProduct);
-router.put('/api/update-products/:id', authMiddleware.isAuthenticated, productsController.updateProduct);
-router.delete('/api/delete-products/:id', authMiddleware.isAuthenticated, productsController.deleteProduct);
-router.put('/api/restore-products/:id', authMiddleware.isAuthenticated, productsController.restoreProduct);
+router.post('/api/update-products/:id', authMiddleware.isAuthenticated, productsController.updateProduct);
+router.post('/api/delete-products/:id', authMiddleware.isAuthenticated, productsController.deleteProduct);
+router.post('/api/restore-products/:id', authMiddleware.isAuthenticated, productsController.restoreProduct);
 
 // cart routes
 router.post('/api/cart/add', authMiddleware.requireLoginRedirect, cartController.addToCart);
@@ -65,4 +65,10 @@ router.post('/api/paypal/capture-order', authMiddleware.requireLoginRedirect, ca
 //admin routes
 router.get('/admin/dashboard', authMiddleware.isAdmin, adminController.dashboard);
 router.get('/admin/products', authMiddleware.isAdmin, adminController.adminProducts);
+router.get('/admin/categories', authMiddleware.isAdmin, adminController.adminCategories);
+router.get('/admin/orders', authMiddleware.isAdmin, adminController.adminOrders);
+router.get('/admin/orders/:orderId', authMiddleware.isAdmin, adminController.getOrderDetails);
+router.post('/admin/orders/:orderId/status', authMiddleware.isAdmin, adminController.updateOrderStatus);
+router.get('/admin/customers', authMiddleware.isAdmin, adminController.customersPage);
+router.get('/admin/customers/:customerId', authMiddleware.isAdmin, adminController.getCustomerDetails);
 module.exports = router;

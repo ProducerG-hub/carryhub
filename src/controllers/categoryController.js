@@ -63,7 +63,7 @@ module.exports.addCategory = (req , res)=>{
                         console.log(err);
                         res.status(500).json({message : 'Error adding category'});
                     }else{
-                        res.status(201).json(result.rows[0]);
+                        res.redirect('/admin/categories');
                     }
                 });
             }
@@ -91,7 +91,7 @@ module.exports.updateCategory = (req , res)=>{
             }else if(result.rows.length === 0){
                 res.status(404).json({message : 'Category not found'});
             }else{
-                res.status(200).json(result.rows[0]);
+                res.redirect('/admin/categories');
             }
         });
     }
@@ -113,7 +113,7 @@ module.exports.deleteCategory = (req , res)=>{
             }else if(result.rows.length === 0){
                 res.status(404).json({message : 'Category not found'});
             }else{
-                res.status(200).json({message : 'Category deleted successfully'});
+                res.redirect('/admin/categories');
             }
         });
     }
@@ -135,7 +135,7 @@ module.exports.restoreCategory = (req , res)=>{
             }else if(result.rows.length === 0){
                 res.status(404).json({message : 'Category not found'});
             }else{
-                res.status(200).json({message : 'Category restored successfully'});
+                res.redirect('/admin/categories');
             }
         });
     }

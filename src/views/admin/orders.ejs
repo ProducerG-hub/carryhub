@@ -1,0 +1,584 @@
+<%- include('../layouts/admin-header', {
+    title: 'Orders Management'
+}) %>
+
+<%- include('../layouts/admin-sidebar') %>
+
+<%- include('../layouts/admin-topbar', { user }) %>
+
+<!-- FILTERS -->
+
+<div class="dashboard-panel mb-4">
+    
+<div class="page-header">
+
+    <h2>
+        Orders Management
+    </h2>
+
+</div>
+
+<!-- STATS -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h3>
+                <%= stats.total_orders %>
+            </h3>
+
+            <span>
+                Total Orders
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h3>
+                <%= stats.pending_orders %>
+            </h3>
+
+            <span>
+                Pending Orders
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h3>
+                <%= stats.paid_orders %>
+            </h3>
+
+            <span>
+                Paid Orders
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h3>
+                TZS <%= Number(stats.total_revenue).toLocaleString() %>
+            </h3>
+
+            <span>
+                Revenue
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="row g-3">
+
+        <div class="col-md-6">
+
+            <input
+                type="text"
+                id="orderSearch"
+                class="form-control"
+                placeholder="Search customer..."
+            >
+
+        </div>
+
+        <div class="col-md-6">
+
+            <select
+                id="statusFilter"
+                class="form-select"
+            >
+
+                <option value="">
+                    All Statuses
+                </option>
+
+                <option value="PENDING">
+                    Pending
+                </option>
+
+                <option value="PAID">
+                    Paid
+                </option>
+
+                <option value="SHIPPED">
+                    Shipped
+                </option>
+
+                <option value="DELIVERED">
+                    Delivered
+                </option>
+
+                <option value="CANCELLED">
+                    Cancelled
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+<!-- TABLE -->
+
+
+    <div class="table-responsive">
+
+        <table
+            class="table align-middle"
+            id="ordersTable"
+        >
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Order ID
+                    </th>
+
+                    <th>
+                        Customer
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% orders.forEach(order => { %>
+
+                    <tr
+                        data-customer="<%= order.full_name.toLowerCase() %>"
+                        data-status="<%= order.status %>"
+                    >
+
+                        <td>
+
+                            #<%= order.order_id %>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                <%= order.full_name %>
+                            </strong>
+
+                            <br>
+
+                            <small>
+                                <%= order.email %>
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            TZS
+                            <%= Number(order.total_amount).toLocaleString() %>
+
+                        </td>
+
+                        <td>
+
+                            <% if(order.status === 'PENDING'){ %>
+
+                                <span class="status-badge bg-warning">
+                                    Pending
+                                </span>
+
+                            <% } %>
+
+                            <% if(order.status === 'PAID'){ %>
+
+                                <span class="status-badge bg-primary">
+                                    Paid
+                                </span>
+
+                            <% } %>
+
+                            <% if(order.status === 'SHIPPED'){ %>
+
+                                <span class="status-badge bg-info">
+                                    Shipped
+                                </span>
+
+                            <% } %>
+
+                            <% if(order.status === 'DELIVERED'){ %>
+
+                                <span class="status-badge bg-success">
+                                    Delivered
+                                </span>
+
+                            <% } %>
+
+                            <% if(order.status === 'CANCELLED'){ %>
+
+                                <span class="status-badge bg-danger">
+                                    Cancelled
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td>
+
+                            <%= new Date(order.order_date)
+                                .toLocaleDateString()
+                            %>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-sm btn-carryhub view-order-btn"
+                                data-order-id="<%= order.order_id %>"
+                            >
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div
+    class="modal fade"
+    id="orderModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Order Details
+
+                </h5>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div id="orderDetails">
+
+                    Loading...
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const rows =
+    document.querySelectorAll(
+        '#ordersTable tbody tr'
+    );
+
+const searchInput =
+    document.getElementById(
+        'orderSearch'
+    );
+
+const statusFilter =
+    document.getElementById(
+        'statusFilter'
+    );
+
+function filterOrders(){
+
+    const search =
+        searchInput.value
+            .toLowerCase();
+
+    const status =
+        statusFilter.value;
+
+    rows.forEach(row => {
+
+        const customer =
+            row.dataset.customer;
+
+        const rowStatus =
+            row.dataset.status;
+
+        const matchSearch =
+            customer.includes(search);
+
+        const matchStatus =
+            status === '' ||
+            status === rowStatus;
+
+        row.style.display =
+            matchSearch &&
+            matchStatus
+                ? ''
+                : 'none';
+
+    });
+
+}
+
+searchInput.addEventListener(
+    'keyup',
+    filterOrders
+);
+
+statusFilter.addEventListener(
+    'change',
+    filterOrders
+);
+
+document
+.querySelectorAll(
+    '.view-order-btn'
+)
+.forEach(btn => {
+
+    btn.addEventListener(
+        'click',
+        async () => {
+
+            const orderId =
+                btn.dataset.orderId;
+
+            const modal =
+                new bootstrap.Modal(
+                    document.getElementById(
+                        'orderModal'
+                    )
+                );
+
+            modal.show();
+
+            const details =
+                document.getElementById(
+                    'orderDetails'
+                );
+
+            details.innerHTML =
+                'Loading...';
+
+            const response =
+                await fetch(
+                    `/admin/orders/${orderId}`
+                );
+
+            const data =
+                await response.json();
+
+            const order =
+                data.order;
+
+            const items =
+                data.items;
+
+            details.innerHTML = `
+                <h5>
+                    Customer
+                </h5>
+
+                <p>
+                    ${order.full_name}<br>
+                    ${order.email}<br>
+                    ${order.phone || ''}
+                </p>
+
+                <hr>
+
+                <h5>
+                    Products
+                </h5>
+
+                <ul>
+                    ${items.map(item => `
+                        <li>
+                            ${item.name}
+                            × ${item.quantity}
+                        </li>
+                    `).join('')}
+                </ul>
+
+                <hr>
+
+                <h5>
+                    Total
+                </h5>
+
+                <p>
+                    TZS ${Number(order.total_amount)
+                        .toLocaleString()}
+                </p>
+
+                <hr>
+
+                <form
+                    id="statusForm"
+                >
+
+                    <select
+                        class="form-select mb-3"
+                        id="statusSelect"
+                    >
+
+                        <option
+                            value="PAID"
+                            ${order.status === 'PAID'
+                                ? 'selected'
+                                : ''}
+                        >
+                            Paid
+                        </option>
+
+                        <option
+                            value="SHIPPED"
+                            ${order.status === 'SHIPPED'
+                                ? 'selected'
+                                : ''}
+                        >
+                            Shipped
+                        </option>
+
+                        <option
+                            value="DELIVERED"
+                            ${order.status === 'DELIVERED'
+                                ? 'selected'
+                                : ''}
+                        >
+                            Delivered
+                        </option>
+
+                        <option
+                            value="CANCELLED"
+                            ${order.status === 'CANCELLED'
+                                ? 'selected'
+                                : ''}
+                        >
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="btn btn-carryhub"
+                    >
+                        Update Status
+                    </button>
+
+                </form>
+            `;
+
+            document
+            .getElementById(
+                'statusForm'
+            )
+            .addEventListener(
+                'submit',
+                async (e) => {
+
+                    e.preventDefault();
+
+                    const status =
+                        document
+                        .getElementById(
+                            'statusSelect'
+                        )
+                        .value;
+
+                    await fetch(
+                        `/admin/orders/${orderId}/status`,
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                'application/json'
+                            },
+
+                            body: JSON.stringify({
+                                status
+                            })
+                        }
+                    );
+
+                    location.reload();
+
+                }
+            );
+
+        }
+    );
+
+});
+
+</script>
+
+<%- include('../layouts/admin-footer') %>

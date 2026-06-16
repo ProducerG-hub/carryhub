@@ -1,0 +1,257 @@
+<%- include('../layouts/admin-header', {
+    title: 'Customer Details'
+}) %>
+
+<%- include('../layouts/admin-sidebar') %>
+
+<%- include('../layouts/admin-topbar', {
+    user
+}) %>
+
+
+
+    <a
+        href="/admin/customers"
+        class="btn btn-outline-secondary mt-3"
+    >
+        Back
+    </a>
+<div class="row g-4">
+
+    <!-- PROFILE -->
+
+    <div class="col-lg-4">
+        <div class="page-header">
+
+    <div>
+
+
+    </div>
+
+</div>
+
+        <div class="dashboard-panel">
+            
+
+            <div
+                class="d-flex flex-column align-items-center text-center"
+            >
+
+                <h4>
+                    <%= customer.full_name %>
+                </h4>
+
+                <p class="text-muted">
+                    <%= customer.email %>
+                </p>
+
+            </div>
+
+            <hr>
+
+            <div class="mb-3">
+
+                <small class="text-muted">
+                    Phone
+                </small>
+
+                <div>
+                    <strong>
+                        <%= customer.phone || 'Not provided' %>
+                    </strong>
+                </div>
+
+            </div>
+
+            <div>
+
+                <small class="text-muted">
+                    Joined
+                </small>
+
+                <div>
+                    <strong>
+                        <%= new Date(customer.created_at).toLocaleDateString() %>
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="col-lg-8">
+
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Total Orders
+                    </div>
+
+                    <div class="stat-value">
+                        <%= customer.total_orders %>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Total Spent
+                    </div>
+
+                    <div class="stat-value">
+
+                        TZS
+
+                        <%= Number(customer.total_spent).toLocaleString() %>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="dashboard-panel">
+
+            <h5 class="mb-3">
+                Order History
+            </h5>
+
+            <div class="table-responsive">
+
+                <table
+                    class="table align-middle"
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order ID
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Order Status
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <% if(orders.length > 0){ %>
+
+                            <% orders.forEach(order => { %>
+
+                                <tr>
+
+                                    <td>
+
+                                        #<%= order.order_id %>
+
+                                    </td>
+
+                                    <td>
+
+                                        <%= new Date(order.order_date).toLocaleDateString() %>
+
+                                    </td>
+
+                                    <td>
+
+                                        TZS
+
+                                        <%= Number(order.total_amount).toLocaleString() %>
+
+                                    </td>
+
+                                    <td>
+
+                                        <span class="status-badge status-processing">
+
+                                            <%= order.status %>
+
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <% if(order.payment_status === 'COMPLETED'){ %>
+
+                                            <span class="status-badge status-delivered">
+                                                Paid
+                                            </span>
+
+                                        <% } else { %>
+
+                                            <span class="status-badge status-pending">
+                                                Pending
+                                            </span>
+
+                                        <% } %>
+
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
+                        <% } else { %>
+
+                            <tr>
+
+                                <td
+                                    colspan="5"
+                                    class="text-center"
+                                >
+
+                                    No orders found
+
+                                </td>
+
+                            </tr>
+
+                        <% } %>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<%- include('../layouts/admin-footer') %>

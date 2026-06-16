@@ -1,0 +1,439 @@
+<%- include('../layouts/admin-header', {
+    title: 'Categories Management'
+}) %>
+
+<%- include('../layouts/admin-sidebar') %>
+
+<%- include('../layouts/admin-topbar', {
+    user
+}) %>
+
+
+
+<div class="dashboard-panel mb-4">
+    <div class="page-header">
+
+    <h2>
+        Categories Management
+    </h2>
+
+    <button
+        class="btn btn-carryhub"
+        data-bs-toggle="modal"
+        data-bs-target="#addCategoryModal"
+    >
+        + Add Category
+    </button>
+
+</div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <input
+                type="text"
+                id="categorySearch"
+                class="form-control"
+                placeholder="Search category..."
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table
+            class="table align-middle"
+            id="categoriesTable"
+        >
+
+            <thead>
+
+                <tr>
+
+                    <th>Category</th>
+
+                    <th>Description</th>
+
+                    <th>Products</th>
+
+                    <th>Status</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% categories.forEach(category => { %>
+
+                    <tr
+                        data-name="<%= category.name.toLowerCase() %>"
+                    >
+
+                        <td>
+
+                            <strong>
+                                <%= category.name %>
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <%= category.description || '-' %>
+
+                        </td>
+
+                        <td>
+
+                            <%= category.products_count || 0 %>
+
+                        </td>
+
+                        <td>
+
+                            <% if(category.is_active){ %>
+
+                                <span class="status-badge status-delivered">
+                                    Active
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="status-badge status-cancelled">
+                                    Inactive
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-sm btn-outline-secondary edit-category-btn"
+                                data-id="<%= category.category_id %>"
+                                data-name="<%= category.name %>"
+                                data-description="<%= category.description || '' %>"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editCategoryModal"
+                            >
+                                Edit
+                            </button>
+
+                            <% if(category.is_active){ %>
+
+                                <form
+                                    action="/api/delete-categories/<%= category.category_id %>"
+                                    method="POST"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Deactivate this category?')"
+                                >
+
+                                    <button
+                                        class="btn btn-sm btn-outline-danger"
+                                    >
+                                        Deactivate
+                                    </button>
+
+                                </form>
+
+                            <% } else { %>
+
+                                <form
+                                    action="/api/restore-categories/<%= category.category_id %>"
+                                    method="POST"
+                                    class="d-inline"
+                                >
+
+                                    <button
+                                        class="btn btn-sm btn-outline-success"
+                                    >
+                                        Restore
+                                    </button>
+
+                                </form>
+
+                            <% } %>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- ADD CATEGORY MODAL -->
+
+<div
+    class="modal fade"
+    id="addCategoryModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form
+                action="/api/add-categories"
+                method="POST"
+            >
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Add Category
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Category Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+                    <div>
+
+                        <label class="form-label">
+                            Description
+                        </label>
+
+                        <textarea
+                            name="description"
+                            rows="4"
+                            class="form-control"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-carryhub"
+                    >
+                        Save Category
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- EDIT CATEGORY MODAL -->
+
+<div
+    class="modal fade"
+    id="editCategoryModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form
+                id="editCategoryForm"
+                method="POST"
+            >
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Edit Category
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Category Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editCategoryName"
+                            name="name"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+                    <div>
+
+                        <label class="form-label">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="editCategoryDescription"
+                            name="description"
+                            rows="4"
+                            class="form-control"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-carryhub"
+                    >
+                        Update Category
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// SEARCH
+
+const searchInput =
+    document.getElementById(
+        'categorySearch'
+    );
+
+const rows =
+    document.querySelectorAll(
+        '#categoriesTable tbody tr'
+    );
+
+searchInput.addEventListener(
+    'keyup',
+    () => {
+
+        const search =
+            searchInput.value.toLowerCase();
+
+        rows.forEach(row => {
+
+            const categoryName =
+                row.dataset.name;
+
+            row.style.display =
+                categoryName.includes(search)
+                    ? ''
+                    : 'none';
+
+        });
+
+    }
+);
+
+// EDIT MODAL
+
+document
+.querySelectorAll(
+    '.edit-category-btn'
+)
+.forEach(button => {
+
+    button.addEventListener(
+        'click',
+        () => {
+
+            document
+            .getElementById(
+                'editCategoryName'
+            )
+            .value =
+                button.dataset.name;
+
+            document
+            .getElementById(
+                'editCategoryDescription'
+            )
+            .value =
+                button.dataset.description;
+
+            document
+            .getElementById(
+                'editCategoryForm'
+            )
+            .action =
+                `/api/update-categories/${button.dataset.id}`;
+
+        }
+    );
+
+});
+
+</script>
+
+<%- include('../layouts/admin-footer') %>
