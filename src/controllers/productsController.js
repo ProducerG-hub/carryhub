@@ -199,7 +199,7 @@ module.exports.addProduct = (req , res)=>{
                 res.status(500).json({message : 'Error adding product'});
             }
             else{
-                res.status(201).json(result.rows[0]);
+                res.redirect('/admin/products');
             }
         });
     }
@@ -224,7 +224,7 @@ module.exports.updateProduct = (req , res)=>{
                 res.status(404).json({message : 'Product not found'});
             }
             else{
-                res.status(200).json(result.rows[0]);
+                res.redirect('/admin/products');
             }
         });
     }
@@ -248,7 +248,7 @@ module.exports.deleteProduct = (req , res)=>{
                 res.status(404).json({message : 'Product not found'});
             }
             else{
-                res.status(200).json({message : 'Product deleted successfully'});
+                res.redirect('/admin/products');
             }
         });
     }
@@ -272,7 +272,7 @@ module.exports.restoreProduct = (req , res)=>{
                 res.status(404).json({message : 'Product not found'});
             }
             else{
-                res.status(200).json({message : 'Product restored successfully'});
+                res.redirect('/admin/products');
             }
         });
     }

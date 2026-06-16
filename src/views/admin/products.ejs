@@ -8,16 +8,15 @@
     user
 }) %>
 
-<div class="page-header">
+<div class="dashboard-panel mb-4">
+    <div class="page-header text-center">
 
-    <h2>
+    <h2 class="page-title d-inline-block">
         Products Management
     </h2>
-</div>
-
-<div class="dashboard-panel mb-4">
-     <button
-        class="btn btn-carryhub"
+    </div>
+    <button
+        class="btn btn-carryhub d-block ms-auto"
         style="width: 200px; margin-bottom: 20px;"
         data-bs-toggle="modal"
         data-bs-target="#addProductModal"
@@ -162,29 +161,51 @@
 
                         </td>
 
-                        <td class="d-flex gap-2">
+                        <td class="d-flex gap-2 mt-2">
 
-                            <a
-                                href="/admin/products/<%= product.product_id %>/edit"
-                                class="btn btn-sm btn-outline-secondary"
-                            >
-                                Edit
-                            </a>
+                            <button
+    class="btn btn-sm btn-outline-secondary edit-product-btn"
+    data-id="<%= product.product_id %>"
+    data-name="<%= product.name %>"
+    data-description="<%= product.description %>"
+    data-price="<%= product.price %>"
+    data-category="<%= product.category_id %>"
+    data-stock="<%= product.stock_quantity %>"
+    data-image="<%= product.image_url %>"
+    data-bs-toggle="modal"
+    data-bs-target="#editProductModal"
+>
+    Edit
+</button>
+                            <% if(product.is_active){ %>
 
-                            <form
-                                action="/admin/products/<%= product.product_id %>/delete"
-                                method="POST"
-                                class="d-inline"
-                            >
+    <form
+        action="/api/delete-products/<%= product.product_id %>"
+        method="POST"
+        class="d-inline"
+    >
+        <button
+            class="btn btn-sm btn-outline-danger"
+        >
+            Deactivate
+        </button>
+    </form>
 
-                                <button
-                                    class="btn btn-sm btn-outline-danger"
-                                >
-                                    Delete
-                                </button>
+<% } else { %>
 
-                            </form>
+    <form
+        action="/api/restore-products/<%= product.product_id %>"
+        method="POST"
+        class="d-inline"
+    >
+        <button
+            class="btn btn-sm btn-outline-success"
+        >
+            Restore
+        </button>
+    </form>
 
+<% } %>
                         </td>
 
                     </tr>
@@ -211,7 +232,7 @@
         <div class="modal-content">
 
             <form
-                action="/admin/products/add"
+                action="/api/add-products"
                 method="POST"
             >
 
@@ -370,6 +391,167 @@
 
 </div>
 
+<div
+    class="modal fade"
+    id="editProductModal"
+    tabindex="-1"
+>
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <form
+                id="editProductForm"
+                action="/api/update-products/:<%= products.product_id %>"
+                method="POST"
+            >
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Edit Product
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Product Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="editName"
+                                name="name"
+                                class="form-control"
+                                required
+                            >
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Category
+                            </label>
+
+                            <select
+                                id="editCategory"
+                                name="category_id"
+                                class="form-select"
+                                required
+                            >
+
+                                <% categories.forEach(category => { %>
+
+                                    <option
+                                        value="<%= category.category_id %>"
+                                    >
+                                        <%= category.name %>
+                                    </option>
+
+                                <% }) %>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Price
+                            </label>
+
+                            <input
+                                type="number"
+                                step="0.01"
+                                id="editPrice"
+                                name="price"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Stock
+                            </label>
+
+                            <input
+                                type="number"
+                                id="editStock"
+                                name="stock_quantity"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Image URL
+                            </label>
+
+                            <input
+                                type="text"
+                                id="editImage"
+                                name="image_url"
+                                class="form-control"
+                            >
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Description
+                            </label>
+
+                            <textarea
+                                id="editDescription"
+                                name="description"
+                                rows="4"
+                                class="form-control"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="submit"
+                        class="btn btn-carryhub"
+                    >
+                        Update Product
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script>
 
 const searchInput =
@@ -430,6 +612,43 @@ categoryFilter.addEventListener(
     'change',
     filterProducts
 );
+
+</script>
+
+<script>
+
+document
+.querySelectorAll('.edit-product-btn')
+.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+        document.getElementById('editName').value =
+            button.dataset.name;
+
+        document.getElementById('editDescription').value =
+            button.dataset.description;
+
+        document.getElementById('editPrice').value =
+            button.dataset.price;
+
+        document.getElementById('editCategory').value =
+            button.dataset.category;
+
+        document.getElementById('editStock').value =
+            button.dataset.stock;
+
+        document.getElementById('editImage').value =
+            button.dataset.image;
+
+        document
+            .getElementById('editProductForm')
+            .action =
+            `/api/update-products/${button.dataset.id}`;
+
+    });
+
+});
 
 </script>
 

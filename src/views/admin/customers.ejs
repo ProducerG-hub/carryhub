@@ -1,0 +1,240 @@
+<%- include('../layouts/admin-header', {
+    title: 'Customers Management'
+}) %>
+
+<%- include('../layouts/admin-sidebar') %>
+
+<%- include('../layouts/admin-topbar', { user }) %>
+
+<div class="dashboard-panel mb-4">
+    <div class="page-header">
+
+    <h2>
+        Customers
+    </h2>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Total Customers
+            </div>
+
+            <div class="stat-value">
+                <%= customers.length %>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Active Customers
+            </div>
+
+            <div class="stat-value">
+                <%= customers.filter(c => Number(c.total_orders) > 0).length %>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <input
+        type="text"
+        id="customerSearch"
+        class="form-control"
+        placeholder="Search customer..."
+    >
+
+    <div class="table-responsive">
+
+        <table
+            class="table align-middle"
+            id="customersTable"
+        >
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Customer
+                    </th>
+
+                    <th>
+                        Email
+                    </th>
+
+                    <th>
+                        Phone
+                    </th>
+
+                    <th>
+                        Orders
+                    </th>
+
+                    <th>
+                        Total Spent
+                    </th>
+
+                    <th>
+                        Joined
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% customers.forEach(customer => { %>
+
+                    <tr
+                        data-name="<%= customer.full_name.toLowerCase() %>"
+                    >
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div>
+
+                                    <strong>
+                                        <%= customer.full_name %>
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <%= customer.email %>
+                        </td>
+
+                        <td>
+                            <%= customer.phone || '-' %>
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge status-processing">
+
+                                <%= customer.total_orders %>
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            TZS
+                            <%= Number(customer.total_spent).toLocaleString() %>
+
+                        </td>
+
+                        <td>
+
+                            <%= new Date(customer.created_at).toLocaleDateString() %>
+
+                        </td>
+
+                        <td>
+
+                            <% if(Number(customer.total_orders) > 0){ %>
+
+                                <span class="status-badge status-delivered">
+                                    Active
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="status-badge status-pending">
+                                    New
+                                </span>
+
+                            <% } %>
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="/admin/customers/<%= customer.user_id %>"
+                                class="btn btn-sm btn-outline-secondary"
+                            >
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+const searchInput =
+    document.getElementById(
+        'customerSearch'
+    );
+
+const rows =
+    document.querySelectorAll(
+        '#customersTable tbody tr'
+    );
+
+searchInput.addEventListener(
+    'keyup',
+    function(){
+
+        const value =
+            this.value.toLowerCase();
+
+        rows.forEach(row => {
+
+            const name =
+                row.dataset.name;
+
+            row.style.display =
+                name.includes(value)
+                    ? ''
+                    : 'none';
+
+        });
+
+    }
+);
+
+</script>
+
+<%- include('../layouts/admin-footer') %>
