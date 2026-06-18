@@ -17,6 +17,7 @@ router.get('/login', urlController.getLogin);
 router.get('/register', urlController.getRegister);
 router.get('/profile', authMiddleware.isAuthenticated, authController.userProfile);
 router.get('/cart', authMiddleware.requireLoginRedirect, cartController.getCart);
+router.get('/contact', urlController.contact);
 
 // Authentication routes
 router.post('/api/auth/register', authController.Register);

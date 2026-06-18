@@ -1,0 +1,303 @@
+<%- include('../layouts/header', {
+    title: 'Contact Us | CarryHub'
+}) %>
+
+<%- include('../layouts/navbar', {
+    user: user
+}) %>
+
+<section class="section-padding">
+
+    <div class="container-custom">
+
+        <!-- HERO -->
+
+        <div class="cart-hero mb-5 text-center">
+
+            <span class="hero-badge">
+                We're here to help
+            </span>
+
+            <h1 class="section-title mb-3">
+                Contact Us
+            </h1>
+
+            <p class="cart-summary-copy">
+
+                Have questions about products,
+                deliveries, orders, or partnerships?
+
+                Reach out to our team and we'll
+                get back to you as soon as possible.
+
+            </p>
+
+        </div>
+
+        <!-- CONTACT INFO -->
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-4">
+
+                <div class="profile-info-card text-center">
+
+                    <i
+                        class="bi bi-envelope-fill fs-2 mb-3"
+                        style="color: var(--secondary-color)"
+                    ></i>
+
+                    <h5>
+                        Email
+                    </h5>
+
+                    <p class="mb-0">
+                        support@carryhub.com
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="profile-info-card text-center">
+
+                    <i
+                        class="bi bi-telephone-fill fs-2 mb-3"
+                        style="color: var(--secondary-color)"
+                    ></i>
+
+                    <h5>
+                        Phone
+                    </h5>
+
+                    <p class="mb-0">
+                        +255 752 123 456
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="profile-info-card text-center">
+
+                    <i
+                        class="bi bi-geo-alt-fill fs-2 mb-3"
+                        style="color: var(--secondary-color)"
+                    ></i>
+
+                    <h5>
+                        Location
+                    </h5>
+
+                    <p class="mb-0">
+                        Dar es Salaam, Tanzania
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CONTACT FORM -->
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+                <div class="auth-panel">
+
+                    <h3
+                        class="mb-4"
+                        style="color: var(--secondary-color)"
+                    >
+                        Send Us A Message
+                    </h3>
+
+                    <form
+                        action="/contact"
+                        method="POST"
+                    >
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="full_name"
+                                    class="form-control"
+                                    value="<%= user?.full_name || '' %>"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="form-control"
+                                    value="<%= user?.email || '' %>"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+                                    Subject
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="subject"
+                                    class="form-control"
+                                    placeholder="What is your message about?"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+                                    Message
+                                </label>
+
+                                <textarea
+                                    name="message"
+                                    rows="6"
+                                    class="form-control"
+                                    placeholder="Type your message here..."
+                                    required
+                                ></textarea>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-carryhub"
+                                >
+                                    Send Message
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FAQ -->
+
+        <div class="mt-5 card p-4 bg-light">
+
+            <div class="dashboard-panel">
+
+                <h3
+                    class="mb-4"
+                    style="color: var(--secondary-color)"
+                >
+                    Frequently Asked Questions
+                </h3>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+
+                        <h6 class="mb-2" style="color: var(--secondary-color);">
+                            How long does delivery take?
+                        </h6>
+
+                        <p class="text-muted">
+
+                            Delivery times vary depending
+                            on your location, but most
+                            orders are delivered within
+                            1–3 business days.
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <h6 class="mb-2" style="color: var(--secondary-color);">
+                            Can I track my order?
+                        </h6>
+
+                        <p class="text-muted">
+
+                            Yes. Once your order is
+                            processed, you'll be able
+                            to view its status from
+                            your Orders page.
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <h6 class="mb-2" style="color: var(--secondary-color);">
+                            What payment methods do you accept?
+                        </h6>
+
+                        <p class="text-muted">
+
+                            We currently support
+                            PayPal secure payments.
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <h6 class="mb-2" style="color: var(--secondary-color);">
+                            Can I cancel my order?
+                        </h6>
+
+                        <p class="text-muted">
+
+                            Orders can be cancelled
+                            before they are shipped.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include('../layouts/footer') %>
+<%- include('../layouts/scripts') %>
