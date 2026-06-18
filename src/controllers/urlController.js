@@ -50,3 +50,9 @@ module.exports.orderSuccess = (
     );
 
 };
+
+module.exports.contact = (req, res) => {
+    res.render('pages/contacts', {
+        user: req.session.user
+    });
+}
